@@ -126,9 +126,9 @@ public class SpriteAnimator
         int offsetY = 0;
         if ( frame != null )
         {
-            bitmapName = frame.name;
-            offsetX = frame.offsetX;
-            offsetY = frame.offsetY;
+            bitmapName = frame.getName();
+            offsetX = frame.getOffsetX();
+            offsetY = frame.getOffsetY();
         }
 
         ret.add(
@@ -153,7 +153,7 @@ public class SpriteAnimator
 
         if ( frame != null )
         {
-            return frame.soundEffect;
+            return frame.getSoundEffect();
         }
 
         return null;

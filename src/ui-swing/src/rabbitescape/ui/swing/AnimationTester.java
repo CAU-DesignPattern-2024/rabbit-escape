@@ -693,17 +693,17 @@ public class AnimationTester extends JFrame
 
                         java.awt.Point loc = int2dim( i );
                         Sprite sprite = new Sprite(
-                            frame.name,
-                            frame.soundEffect,
+                            frame.getName(),
+                            frame.getSoundEffect(),
                             loc.x,
                             loc.y,
-                            frame.offsetX,
-                            frame.offsetY
+                            frame.getOffsetX(),
+                            frame.getOffsetY()
                         );
 
                         if( frameLogging && Mode.FRAME_DUMP != runMode  )
                         {
-                            System.out.println( frame.name );
+                            System.out.println( frame.getName() );
                         }
 
                         sprites.add( sprite );

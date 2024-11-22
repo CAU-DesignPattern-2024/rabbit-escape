@@ -8,18 +8,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import rabbitescape.engine.util.Util;
 
 public class TestConfig
 {
-    @Before
-    public void setUp(){
-        MemoryConfigStorage.reset();
-    }
-
     @Test
     public void When_no_underlying_values_defaults_are_returned()
     {
@@ -32,7 +26,7 @@ public class TestConfig
     @Test
     public void You_get_back_the_value_you_set()
     {
-        Config cfg = new Config( simpleSchema(), MemoryConfigStorage.getInstance() );
+        Config cfg = new Config( simpleSchema(), new MemoryConfigStorage() );
 
         // Sanity
         assertThat( cfg.get( "key1" ), equalTo( "defaultValue1" ) );
@@ -95,7 +89,7 @@ public class TestConfig
     @Test
     public void Stored_version_info_gets_read()
     {
-        MemoryConfigStorage storage = MemoryConfigStorage.getInstance();
+        MemoryConfigStorage storage = new MemoryConfigStorage();
         storage.set( Config.CFG_VERSION, "12" );
         Config cfg = new Config( simpleSchema(), storage );
 
@@ -110,7 +104,7 @@ public class TestConfig
         FakeConfigUpgrade to2 = new FakeConfigUpgrade( "2", log );
         FakeConfigUpgrade to3 = new FakeConfigUpgrade( "3", log );
 
-        new Config( simpleSchema(), MemoryConfigStorage.getInstance(), to1, to2, to3 );
+        new Config( simpleSchema(), new MemoryConfigStorage(), to1, to2, to3 );
 
         assertThat( Util.join( "", log ), equalTo( "123" ) );
     }
@@ -118,7 +112,7 @@ public class TestConfig
     @Test
     public void When_no_existing_version_and_no_upgrades_everything_is_ok()
     {
-        new Config( simpleSchema(), MemoryConfigStorage.getInstance() );
+        new Config( simpleSchema(), new MemoryConfigStorage() );
     }
 
     @Test
@@ -130,7 +124,7 @@ public class TestConfig
         FakeConfigUpgrade to3 = new FakeConfigUpgrade( "3", log );
         FakeConfigUpgrade to4 = new FakeConfigUpgrade( "4", log );
 
-        MemoryConfigStorage storage = MemoryConfigStorage.getInstance();
+        MemoryConfigStorage storage = new MemoryConfigStorage();
         storage.set( Config.CFG_VERSION, "2" );
 
         new Config( simpleSchema(), storage, to1, to2, to3, to4 );
@@ -146,7 +140,7 @@ public class TestConfig
         FakeConfigUpgrade to2 = new FakeConfigUpgrade( "2", log );
         FakeConfigUpgrade to3 = new FakeConfigUpgrade( "3", log );
 
-        MemoryConfigStorage storage = MemoryConfigStorage.getInstance();
+        MemoryConfigStorage storage = new MemoryConfigStorage();
         storage.set( Config.CFG_VERSION, "3" );
 
         new Config( simpleSchema(), storage, to1, to2, to3 );
@@ -162,7 +156,7 @@ public class TestConfig
         FakeConfigUpgrade to2 = new FakeConfigUpgrade( "2", log );
         FakeConfigUpgrade to3 = new FakeConfigUpgrade( "3", log );
 
-        MemoryConfigStorage storage = MemoryConfigStorage.getInstance();
+        MemoryConfigStorage storage = new MemoryConfigStorage();
 
         // This is what we are testing - upgrade to version 3
         new Config( simpleSchema(), storage, to1, to2, to3 );
@@ -178,7 +172,7 @@ public class TestConfig
         FakeConfigUpgrade to2 = new FakeConfigUpgrade( "2", log );
         FakeConfigUpgrade to3 = new FakeConfigUpgrade( "3", log );
 
-        MemoryConfigStorage storage = MemoryConfigStorage.getInstance();
+        MemoryConfigStorage storage = new MemoryConfigStorage();
         storage.set( Config.CFG_VERSION, "3" );
 
         // This is what we are testing - already at 3 so ne need to upgrade

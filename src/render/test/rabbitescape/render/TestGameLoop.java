@@ -128,7 +128,7 @@ public class TestGameLoop
             false
         );
 
-        Config config = new Config( null, new MemoryConfigStorage() );
+        Config config = new Config( null, MemoryConfigStorage.getInstance() );
         PrintStream debugout = null;
 
         ret.gameLoop = new GameLoop(

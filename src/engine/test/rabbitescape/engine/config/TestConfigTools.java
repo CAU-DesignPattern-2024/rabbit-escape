@@ -12,16 +12,23 @@ import java.util.TreeSet;
 
 import static rabbitescape.engine.util.Util.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 
 public class TestConfigTools
 {
+
+    @Before
+    public void setUp(){
+        MemoryConfigStorage.reset();
+    }
+
     @Test
     public void Can_get_and_set_ints()
     {
         Config cfg = new Config(
-            TestConfig.simpleSchema(), new MemoryConfigStorage() );
+            TestConfig.simpleSchema(), MemoryConfigStorage.getInstance() );
 
         ConfigTools.setInt( cfg, "key1", 3 );
 
@@ -33,7 +40,7 @@ public class TestConfigTools
     {
         ConfigSchema definition = new ConfigSchema();
         definition.set( "num", "45", "" );
-        Config cfg = new Config( definition, new MemoryConfigStorage() );
+        Config cfg = new Config( definition, MemoryConfigStorage.getInstance() );
 
         assertThat( ConfigTools.getInt( cfg, "num" ), is( 45 ) );
     }
@@ -45,7 +52,7 @@ public class TestConfigTools
         def.set( "key1", "true", "desc1" );
         def.set( "key2", "false", "desc2" );
 
-        Config cfg = new Config( def, new MemoryConfigStorage() );
+        Config cfg = new Config( def, MemoryConfigStorage.getInstance() );
 
         assertThat( ConfigTools.getBool( cfg, "key1" ), is( true ) );
         assertThat( ConfigTools.getBool( cfg, "key2" ), is( false ) );
@@ -61,7 +68,7 @@ public class TestConfigTools
         // Make a config with default map with 1 key
         ConfigSchema def = new ConfigSchema();
         def.set( "key1", "{\"a\":\"b\"}", "desc1" );
-        Config cfg = new Config( def, new MemoryConfigStorage() );
+        Config cfg = new Config( def, MemoryConfigStorage.getInstance() );
 
         // Get the map value out
         assertThat(
@@ -95,7 +102,7 @@ public class TestConfigTools
         // Make a config with default map with 1 key
         ConfigSchema def = new ConfigSchema();
         def.set( "key1", "{}", "desc1" );
-        Config cfg = new Config( def, new MemoryConfigStorage() );
+        Config cfg = new Config( def, MemoryConfigStorage.getInstance() );
 
         // We get an empty map of the type we ask for
         assertThat(
@@ -116,7 +123,7 @@ public class TestConfigTools
         // Make a config with default map with 1 key
         ConfigSchema def = new ConfigSchema();
         def.set( "key1", "{\"a\":3}", "desc1" );
-        Config cfg = new Config( def, new MemoryConfigStorage() );
+        Config cfg = new Config( def, MemoryConfigStorage.getInstance() );
 
         // Get the map value out
         assertThat(
@@ -164,7 +171,7 @@ public class TestConfigTools
         // Make a config with default map with 1 key
         ConfigSchema def = new ConfigSchema();
         def.set( "key1", "[\"a\",\"bb\",\"\"]", "desc1" );
-        Config cfg = new Config( def, new MemoryConfigStorage() );
+        Config cfg = new Config( def, MemoryConfigStorage.getInstance() );
 
         // Get the map value out
         assertThat(
@@ -195,7 +202,7 @@ public class TestConfigTools
         // Make a config with default map with 1 key
         ConfigSchema def = new ConfigSchema();
         def.set( "key1", "[]", "desc1" );
-        Config cfg = new Config( def, new MemoryConfigStorage() );
+        Config cfg = new Config( def, MemoryConfigStorage.getInstance() );
 
         // We get an empty map of the type we ask for
         assertThat(
@@ -216,7 +223,7 @@ public class TestConfigTools
         // Make a config with default map with 1 key
         ConfigSchema def = new ConfigSchema();
         def.set( "key1", "[1,5,7]", "desc1" );
-        Config cfg = new Config( def, new MemoryConfigStorage() );
+        Config cfg = new Config( def, MemoryConfigStorage.getInstance() );
 
         // Get the map value out
         assertThat(

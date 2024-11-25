@@ -39,3 +39,4 @@ proguard/
 
 # custom
 **/.project
+.idea

@@ -172,6 +172,6 @@ public class TestAnimationLoader
 
     private String frameToString( Frame frame )
     {
-        return frame.name + " " + frame.offsetX + " " + frame.offsetY;
+        return frame.getName() + " " + frame.getOffsetX() + " " + frame.getOffsetY();
     }
 }

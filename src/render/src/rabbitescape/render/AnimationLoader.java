@@ -141,45 +141,39 @@ public class AnimationLoader
 
         try
         {
-            switch ( parts.length )
-            {
-                case 1:
-                {
-                    return new Frame( parts[0], xOffset, yOffset, null );
+            switch (parts.length) {
+                case 1: {
+                    return new Frame.FrameBuilder(parts[0])
+                        .offsetX(xOffset)
+                        .offsetY(yOffset)
+                        .build();
                 }
-                case 2:
-                {
-                    return new Frame(
-                        parts[0], Integer.valueOf( parts[1] ) + xOffset,
-                        yOffset, null );
+                case 2: {
+                    return new Frame.FrameBuilder(parts[0])
+                        .offsetX(Integer.valueOf(parts[1]) + xOffset)
+                        .offsetY(yOffset)
+                        .build();
                 }
-                case 3:
-                {
-                    if ( parts[0].equals( "offset" ) )
-                    {
-                        xOffset = Integer.valueOf( parts[1] ) + xOffset;
-                        yOffset = Integer.valueOf( parts[2] ) + yOffset;
+                case 3: {
+                    if (parts[0].equals("offset")) {
+                        xOffset = Integer.valueOf(parts[1]) + xOffset;
+                        yOffset = Integer.valueOf(parts[2]) + yOffset;
                         return null;
                     }
-                    return new Frame(
-                        parts[0],
-                        Integer.valueOf( parts[1] ) + xOffset,
-                        Integer.valueOf( parts[2] ) + yOffset,
-                        null
-                    );
+                    return new Frame.FrameBuilder(parts[0])
+                        .offsetX(Integer.valueOf(parts[1]) + xOffset)
+                        .offsetY(Integer.valueOf(parts[2]) + yOffset)
+                        .build();
                 }
-                case 4:
-                {
-                    return new Frame(
-                        parts[0],
-                        Integer.valueOf( parts[1] ) + xOffset,
-                        Integer.valueOf( parts[2] ) + yOffset,
-                        parts[3]
-                    );
+                case 4: {
+                    return new Frame.FrameBuilder(parts[0])
+                        .offsetX(Integer.valueOf(parts[1]) + xOffset)
+                        .offsetY(Integer.valueOf(parts[2]) + yOffset)
+                        .soundEffect(parts[3])
+                        .build();
                 }
-                default:
-                {
-                    throw new BadAnimationLine( animLine );
+                default: {
+                    throw new BadAnimationLine(animLine);
                 }
             }
         }

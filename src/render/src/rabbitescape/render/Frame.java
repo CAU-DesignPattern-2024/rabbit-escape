@@ -1,27 +1,51 @@
 package rabbitescape.render;
 
-public class Frame
-{
-    public final String name;
-    public final int offsetX;
-    public final int offsetY;
-    public final String soundEffect;
 
-    public Frame( String name )
-    {
-        this( name, 0, 0, null );
+public class Frame {
+    private final String name;
+    private final int offsetX;
+    private final int offsetY; 
+    private final String soundEffect;
+
+    private Frame(FrameBuilder builder) {
+        this.name = builder.name;
+        this.offsetX = builder.offsetX;
+        this.offsetY = builder.offsetY;
+        this.soundEffect = builder.soundEffect;
     }
 
-    public Frame( String name, int offsetX )
-    {
-        this( name, offsetX, 0, null );
+    public static class FrameBuilder {
+        private final String name;  // required
+        private int offsetX = 0;    // optional
+        private int offsetY = 0;    // optional
+        private String soundEffect = null;  // optional
+
+        public FrameBuilder(String name) {
+            this.name = name;
+        }
+
+        public FrameBuilder offsetX(int offsetX) {
+            this.offsetX = offsetX;
+            return this;
+        }
+
+        public FrameBuilder offsetY(int offsetY) {
+            this.offsetY = offsetY;
+            return this;
+        }
+
+        public FrameBuilder soundEffect(String soundEffect) {
+            this.soundEffect = soundEffect;
+            return this;
+        }
+
+        public Frame build() {
+            return new Frame(this);
+        }
     }
 
-    public Frame( String name, int offsetX, int offsetY, String soundEffect )
-    {
-        this.name = name;
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
-        this.soundEffect = soundEffect;
-    }
+    public String getName() { return name; }
+    public int getOffsetX() { return offsetX; }
+    public int getOffsetY() { return offsetY; }
+    public String getSoundEffect() { return soundEffect; }
 }

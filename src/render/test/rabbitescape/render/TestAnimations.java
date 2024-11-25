@@ -73,7 +73,7 @@ public class TestAnimations
         {
             String resourcePath =
                 "/rabbitescape/ui/swing/images32/" +
-                f.name + ".png";
+                f.getName() + ".png";
             URL url = getClass().getResource( resourcePath );
             boolean fileExists = ( url != null );
             if ( !fileExists )

@@ -7,7 +7,7 @@ JAVA_RENDER := $(call J,src/render)
 JAVA_UI_TEXT := $(call J,src/ui-text)
 JAVA_UI_SWING := $(call J,src/ui-swing)
 
-TEST_CLASSPATH := lib/org.hamcrest.core_1.3.0.jar:lib/junit.jar
+TEST_CLASSPATH := lib/org.hamcrest.core_1.3.0.jar:lib/junit.jar:lib/assertj-core-3.26.0.jar
 
 compile.mk-compile: \
 		checks \

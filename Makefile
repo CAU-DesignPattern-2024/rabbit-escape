@@ -82,6 +82,7 @@ remove-trailing:
 test: compile
 	@echo ". Running unit tests"
 	@./build-scripts/test-java "${TEST_CLASSPATH}" src/engine/bin
+	@./build-scripts/test-java "${TEST_CLASSPATH}" src/render/bin
 
 slowtest: test android-debug-test slowtest-run
 

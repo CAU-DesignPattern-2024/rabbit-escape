@@ -2,7 +2,7 @@ package rabbitescape.render;
 
 import rabbitescape.render.androidlike.Bitmap;
 
-public class BitmapCache<T extends Bitmap>
+public class BitmapCache<T extends Bitmap> implements IBitmapCache<T>
 {
     private BitmapLoader<T> loader;
     private final BitmapScaler<T> scaler;
@@ -19,6 +19,7 @@ public class BitmapCache<T extends Bitmap>
         this.cache = new ReLruCache<T>( cacheSize );
     }
 
+    @Override
     public T get( String fileName, int tileSize )
     {
         T ret = cache.get( fileName + tileSize );
@@ -32,11 +33,13 @@ public class BitmapCache<T extends Bitmap>
         return ret;
     }
 
+    @Override
     public void recycle()
     {
         cache.recycle();
     }
 
+    @Override
     public void setLoader( BitmapLoader<T> loader )
     {
         this.loader = loader;

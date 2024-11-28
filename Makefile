@@ -2,6 +2,7 @@
 MAKEFLAGS += --warn-undefined-variables
 
 CLASSPATH=src/engine/bin/:src/render/bin/:src/ui-text/bin/:src/ui-swing/bin/
+TEST_CLASSPATH := lib/org.hamcrest.core_1.3.0.jar:lib/junit.jar:lib/assertj-core-3.26.0.jar:src/engine/bin:src/render/bin:src/ui-swing/bin
 
 VERSION=0.13.4
 
@@ -82,6 +83,7 @@ remove-trailing:
 test: compile
 	@echo ". Running unit tests"
 	@./build-scripts/test-java "${TEST_CLASSPATH}" src/engine/bin
+	@./build-scripts/test-java "${TEST_CLASSPATH}" src/render/bin
 
 slowtest: test android-debug-test slowtest-run
 

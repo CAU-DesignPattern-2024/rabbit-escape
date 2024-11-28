@@ -7,7 +7,7 @@ JAVA_RENDER := $(call J,src/render)
 JAVA_UI_TEXT := $(call J,src/ui-text)
 JAVA_UI_SWING := $(call J,src/ui-swing)
 
-TEST_CLASSPATH := lib/org.hamcrest.core_1.3.0.jar:lib/junit.jar:lib/assertj-core-3.26.0.jar
+TEST_CLASSPATH := lib/org.hamcrest.core_1.3.0.jar:lib/junit.jar:lib/assertj-core-3.26.0.jar:src/engine/bin:src/render/bin
 
 compile.mk-compile: \
 		checks \
@@ -30,14 +30,14 @@ compile.mk-compile-noui-notests: \
 	@rm -rf src/engine/bin/*
 	@./build-scripts/compile-java \
 		src/engine/bin/compilenotests.touchfile \
-		"" \
+		"${TEST_CLASSPATH}" \
 		src/engine/bin \
 		src/engine/src
 
 	@rm -rf src/render/bin/*
 	@./build-scripts/compile-java \
 		src/render/bin/compilenotests.touchfile \
-		"src/engine/bin" \
+		"${TEST_CLASSPATH}:src/engine/bin" \
 		src/render/bin \
 		src/render/src
 

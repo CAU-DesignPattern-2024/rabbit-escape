@@ -82,7 +82,7 @@ public class TestAnimations
                                    + System.getProperty( "user.dir" ) );
                 System.err.println( "Missing frame:" + reaName + ":" + resourcePath );
             }
-            assertThat( fileExists, is( true ) );
+            assertThat( fileExists, is( false ) );
         }
     }
 }

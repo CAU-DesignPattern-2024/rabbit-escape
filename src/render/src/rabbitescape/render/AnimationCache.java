@@ -3,7 +3,7 @@ package rabbitescape.render;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AnimationCache
+public class AnimationCache implements IAnimationCache 
 {
     private final String[] names;
     private final Map<String, Animation> animations;
@@ -22,11 +22,13 @@ public class AnimationCache
         }
     }
 
+    @Override
     public String[] listAll()
     {
         return names;
     }
 
+    @Override
     public Animation get( String animationName )
     {
         return animations.get( animationName );

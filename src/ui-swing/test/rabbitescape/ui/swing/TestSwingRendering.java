@@ -14,20 +14,20 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import rabbitescape.render.BitmapCache;
+import rabbitescape.render.BitmapCacheProxy;
 import rabbitescape.render.Renderer;
 import rabbitescape.render.Sprite;
 
 public class TestSwingRendering
 {
     private SwingBitmapLoader loader;
-    private BitmapCache<SwingBitmap> cache;
+    private BitmapCacheProxy<SwingBitmap> cacheProxy;
 
     @Before
     public void setUp()
     {
         loader = new SwingBitmapLoader();
-        cache = new BitmapCache<SwingBitmap>(
+        cacheProxy = new BitmapCacheProxy<SwingBitmap>(
             loader,
             new SwingBitmapScaler(),
             Runtime.getRuntime().maxMemory() / 8
@@ -37,7 +37,7 @@ public class TestSwingRendering
     @After
     public void tearDown()
     {
-        cache.recycle();
+        cacheProxy.recycle();
     }
 
     @Test
@@ -55,7 +55,7 @@ public class TestSwingRendering
         SwingBitmapCanvas output = blankCanvas( 64, 96 );
 
         Renderer<SwingBitmap, SwingPaint> renderer =
-            new Renderer<SwingBitmap, SwingPaint>( 0, 0, 32, cache );
+            new Renderer<SwingBitmap, SwingPaint>( 0, 0, 32, cacheProxy );
 
         renderer.render( output, sprites, new SwingPaint( null ) );
 
@@ -75,7 +75,7 @@ public class TestSwingRendering
         SwingBitmapCanvas output = blankCanvas( 35, 34 );
 
         Renderer<SwingBitmap, SwingPaint> renderer =
-            new Renderer<SwingBitmap, SwingPaint>( 3, 2, 32, cache );
+            new Renderer<SwingBitmap, SwingPaint>( 3, 2, 32, cacheProxy );
 
         renderer.render( output, sprites, new SwingPaint( null ) );
 
@@ -95,7 +95,7 @@ public class TestSwingRendering
         SwingBitmapCanvas output = blankCanvas( 35, 34 );
 
         Renderer<SwingBitmap, SwingPaint> renderer =
-            new Renderer<SwingBitmap, SwingPaint>( 3, 2, 16, cache );
+            new Renderer<SwingBitmap, SwingPaint>( 3, 2, 16, cacheProxy );
             // ... but the renderer gets to say what size it wants (16).
 
         renderer.render( output, sprites, new SwingPaint( null ) );
@@ -117,7 +117,7 @@ public class TestSwingRendering
         SwingBitmapCanvas output = blankCanvas( 35, 34 );
 
         Renderer<SwingBitmap, SwingPaint> renderer =
-            new Renderer<SwingBitmap, SwingPaint>( 0, 0, 32, cache );
+            new Renderer<SwingBitmap, SwingPaint>( 0, 0, 32, cacheProxy );
         // the Renderer is not
 
         renderer.render( output, sprites, new SwingPaint( null ) );
@@ -138,7 +138,7 @@ public class TestSwingRendering
         SwingBitmapCanvas output = blankCanvas( 35, 34 );
 
         Renderer<SwingBitmap, SwingPaint> renderer =
-            new Renderer<SwingBitmap, SwingPaint>( 0, 0, 16, cache );
+            new Renderer<SwingBitmap, SwingPaint>( 0, 0, 16, cacheProxy );
 
         renderer.render( output, sprites, new SwingPaint( null ) );
 

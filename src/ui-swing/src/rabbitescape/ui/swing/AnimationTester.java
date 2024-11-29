@@ -285,7 +285,7 @@ public class AnimationTester extends JFrame
     private final java.awt.Canvas canvas;
     private final Config atConfig;
     private final SwingPaint paint;
-    private final BitmapCache<SwingBitmap> bitmapCache;
+    private final BitmapCacheProxy<SwingBitmap> bitmapCacheProxy;
     private final AnimationCache animationCache;
     private final String[] allBlocks = new String[]
     {
@@ -392,7 +392,7 @@ public class AnimationTester extends JFrame
 
         paint = new SwingPaint( null );
 
-        bitmapCache = new BitmapCache<SwingBitmap>(
+        bitmapCacheProxy = new BitmapCacheProxy<SwingBitmap>(
             new SwingBitmapLoader(),
             new SwingBitmapScaler(),
             SwingMain.cacheSize()
@@ -526,7 +526,7 @@ public class AnimationTester extends JFrame
 
         Renderer<SwingBitmap, SwingPaint> renderer =
             new Renderer<SwingBitmap, SwingPaint>( 0, 0, tileSize,
-                                                   bitmapCache );
+                                                   bitmapCacheProxy );
 
         SoundPlayer soundPlayer =
             new SoundPlayer( SwingSound.create( false ) );

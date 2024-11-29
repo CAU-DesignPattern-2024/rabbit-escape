@@ -21,7 +21,7 @@ public class TestRendering
     {
         TrackingBitmapScaler scaler = new TrackingBitmapScaler();
         FakeBitmapLoader loader = new FakeBitmapLoader( 12, 12 );
-        BitmapCache<FakeBitmap> cache = new BitmapCache<FakeBitmap>(
+        BitmapCacheProxy<FakeBitmap> cacheProxy = new BitmapCacheProxy<FakeBitmap>(
             loader, scaler, Runtime.getRuntime().maxMemory() / 8 );
 
         List<Sprite> sprites1 = sprites( "x", 1, 1, 6, 4 );
@@ -30,7 +30,7 @@ public class TestRendering
         TrackingCanvas output = new TrackingCanvas( 200, 200, loader, scaler );
 
         Renderer<FakeBitmap, FakePaint> renderer =
-            new Renderer<FakeBitmap, FakePaint>( 0, 0, 16, cache );
+            new Renderer<FakeBitmap, FakePaint>( 0, 0, 16, cacheProxy );
 
         // Sanity: no calls to scale yet
         assertThat( scaler.scaleCalls.size(), equalTo( 0 ) );
@@ -196,14 +196,14 @@ public class TestRendering
     {
         TrackingBitmapScaler scaler = new TrackingBitmapScaler();
         FakeBitmapLoader loader = new FakeBitmapLoader( bitmapWidth, bitmapHeight );
-        BitmapCache<FakeBitmap> cache = new BitmapCache<FakeBitmap>(
+        BitmapCacheProxy<FakeBitmap> cacheProxy = new BitmapCacheProxy<FakeBitmap>(
             loader, scaler, Runtime.getRuntime().maxMemory() / 8 );
 
         TrackingCanvas output = new TrackingCanvas(
             canvasSizeX, canvasSizeY, loader, scaler );
 
         new Renderer<FakeBitmap, FakePaint>(
-            rendererOffsetX, rendererOffsetY, tileSize, cache
+            rendererOffsetX, rendererOffsetY, tileSize, cacheProxy
         ).render(
             output,
             sprites(

@@ -13,7 +13,7 @@ import rabbitescape.engine.util.MathUtil;
 import rabbitescape.engine.util.Util;
 import rabbitescape.render.AnimationCache;
 import rabbitescape.render.AnimationLoader;
-import rabbitescape.render.BitmapCache;
+import rabbitescape.render.BitmapCacheProxy;
 import rabbitescape.render.GraphPaperBackground;
 import rabbitescape.render.PolygonBuilder;
 import rabbitescape.render.Overlay;

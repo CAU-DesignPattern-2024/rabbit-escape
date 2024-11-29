@@ -1,7 +1,7 @@
 package rabbitescape.ui.swing;
 
 import rabbitescape.engine.config.Config;
-import rabbitescape.render.BitmapCache;
+import rabbitescape.render.BitmapCacheProxy;
 
 public class SwingGameInit implements Runnable
 {
@@ -40,32 +40,32 @@ public class SwingGameInit implements Runnable
     public static class WhenUiReady
     {
         public final GameUi jframe;
-        public final BitmapCache<SwingBitmap> bitmapCache;
+        public final BitmapCacheProxy<SwingBitmap> bitmapCacheProxy;
 
         public WhenUiReady(
-            GameUi jframe, BitmapCache<SwingBitmap> bitmapCache )
+            GameUi jframe, BitmapCacheProxy<SwingBitmap> bitmapCacheProxy )
         {
             this.jframe = jframe;
-            this.bitmapCache = bitmapCache;
+            this.bitmapCacheProxy = bitmapCacheProxy;
         }
     }
 
     public final WaitForUi waitForUi = new WaitForUi();
     private WhenUiReady whenUiReady = null;
 
-    private final BitmapCache<SwingBitmap> bitmapCache;
+    private final BitmapCacheProxy<SwingBitmap> bitmapCacheProxy;
     private final Config uiConfig;
     public final MainJFrame frame;
     private final MenuUi menuUi;
 
     public SwingGameInit(
-        BitmapCache<SwingBitmap> bitmapCache,
+        BitmapCacheProxy<SwingBitmap> bitmapCacheProxy,
         Config uiConfig,
         MainJFrame frame,
         MenuUi menuUi
     )
     {
-        this.bitmapCache = bitmapCache;
+        this.bitmapCacheProxy = bitmapCacheProxy;
         this.uiConfig = uiConfig;
         this.frame = frame;
         this.menuUi = menuUi;
@@ -75,11 +75,11 @@ public class SwingGameInit implements Runnable
     public void run()
     {
         //noinspection UnnecessaryLocalVariable
-        GameUi jframe = new GameUi( uiConfig, bitmapCache, frame, menuUi );
+        GameUi jframe = new GameUi( uiConfig, bitmapCacheProxy, frame, menuUi );
 
         // Populate the cache with images in a worker thread?
 
-        this.whenUiReady = new WhenUiReady( jframe, bitmapCache );
+        this.whenUiReady = new WhenUiReady( jframe, bitmapCacheProxy );
 
         waitForUi.notifyUiReady();
     }

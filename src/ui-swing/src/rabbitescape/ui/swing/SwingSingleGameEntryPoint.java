@@ -17,14 +17,14 @@ import rabbitescape.engine.util.CommandLineOption;
 import rabbitescape.engine.util.CommandLineOptionSet;
 import rabbitescape.engine.util.FileSystem;
 import rabbitescape.engine.util.RealFileSystem;
-import rabbitescape.render.BitmapCache;
+import rabbitescape.render.BitmapCacheProxy;
 import rabbitescape.render.GameLaunch;
 import rabbitescape.render.SingleGameEntryPoint;
 import rabbitescape.render.androidlike.Sound;
 
 public class SwingSingleGameEntryPoint extends SingleGameEntryPoint
 {
-    private final BitmapCache<SwingBitmap> bitmapCache;
+    private final BitmapCacheProxy<SwingBitmap> bitmapCacheProxy;
     private final Config uiConfig;
     private final MainJFrame frame;
     private final Sound sound;
@@ -38,7 +38,7 @@ public class SwingSingleGameEntryPoint extends SingleGameEntryPoint
         FileSystem fs,
         PrintStream out,
         Locale locale,
-        BitmapCache<SwingBitmap> bitmapCache,
+        BitmapCacheProxy<SwingBitmap> bitmapCacheProxy,
         Config uiConfig,
         MainJFrame frame,
         Sound sound,
@@ -50,7 +50,7 @@ public class SwingSingleGameEntryPoint extends SingleGameEntryPoint
     )
     {
         super( fs, out, locale );
-        this.bitmapCache = bitmapCache;
+        this.bitmapCacheProxy = bitmapCacheProxy;
         this.uiConfig = uiConfig;
         this.frame = frame;
         this.sound = sound;
@@ -131,7 +131,7 @@ public class SwingSingleGameEntryPoint extends SingleGameEntryPoint
             new RealFileSystem(),
             System.out,
             Locale.getDefault(),
-            new BitmapCache<>(
+            new BitmapCacheProxy<>(
                 new SwingBitmapLoader(),
                 new SwingBitmapScaler(),
                 SwingMain.cacheSize()
@@ -154,7 +154,7 @@ public class SwingSingleGameEntryPoint extends SingleGameEntryPoint
         World world, LevelWinListener winListener )
     {
         SwingGameInit init = new SwingGameInit(
-            bitmapCache, uiConfig, frame, menuUi );
+            bitmapCacheProxy, uiConfig, frame, menuUi );
 
         SwingUtilities.invokeLater( init );
 

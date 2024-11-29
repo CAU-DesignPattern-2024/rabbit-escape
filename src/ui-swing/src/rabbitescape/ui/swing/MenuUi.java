@@ -45,7 +45,7 @@ import rabbitescape.engine.err.RabbitEscapeException;
 import rabbitescape.engine.menu.*;
 import rabbitescape.engine.util.RealFileSystem;
 import rabbitescape.engine.util.Util.IdxObj;
-import rabbitescape.render.BitmapCache;
+import rabbitescape.render.BitmapCacheProxy;
 import rabbitescape.render.androidlike.Sound;
 
 public class MenuUi
@@ -136,7 +136,7 @@ public class MenuUi
     private final RealFileSystem fs;
     private final PrintStream out;
     private final Locale locale;
-    private final BitmapCache<SwingBitmap> bitmapCache;
+    private final BitmapCacheProxy<SwingBitmap> bitmapCacheProxy;
 
     private final Stack<Menu> stack;
     private final Config uiConfig;
@@ -151,7 +151,7 @@ public class MenuUi
         RealFileSystem fs,
         PrintStream out,
         Locale locale,
-        BitmapCache<SwingBitmap> bitmapCache,
+        BitmapCacheProxy<SwingBitmap> bitmapCacheProxy,
         Config uiConfig,
         MainJFrame frame,
         Sound sound
@@ -160,7 +160,7 @@ public class MenuUi
         this.fs = fs;
         this.out = out;
         this.locale = locale;
-        this.bitmapCache = bitmapCache;
+        this.bitmapCacheProxy = bitmapCacheProxy;
         this.stack = new Stack<>();
         this.uiConfig = uiConfig;
         this.frame = frame;
@@ -188,7 +188,7 @@ public class MenuUi
 
         sidemenu = new SideMenu(
             contentPane,
-            bitmapCache,
+            bitmapCacheProxy,
             new Dimension( 32, 32 ),
             uiConfig,
             backgroundColor
@@ -386,7 +386,7 @@ public class MenuUi
                     fs,
                     out,
                     locale,
-                    bitmapCache,
+                    bitmapCacheProxy,
                     uiConfig,
                     frame,
                     sound,

@@ -2,7 +2,7 @@ package rabbitescape.ui.android;
 
 import android.content.res.Resources;
 
-import rabbitescape.render.BitmapCache;
+import rabbitescape.render.BitmapCacheProxy;
 
 /**
  * I feel dirty, but I don't know how to ensure we

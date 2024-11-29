@@ -11,7 +11,7 @@ import rabbitescape.engine.config.Config;
 import rabbitescape.engine.config.ConfigTools;
 import rabbitescape.engine.i18n.Translation;
 import rabbitescape.engine.util.RealFileSystem;
-import rabbitescape.render.BitmapCache;
+import rabbitescape.render.BitmapCacheProxy;
 import rabbitescape.render.androidlike.Sound;
 
 public class SwingMain
@@ -19,7 +19,7 @@ public class SwingMain
     private final RealFileSystem fs;
     private final PrintStream out;
     private final Locale locale;
-    private final BitmapCache<SwingBitmap> bitmapCache;
+    private final BitmapCacheProxy<SwingBitmap> bitmapCacheProxy;
     private final Config uiConfig;
     private final Sound sound;
 
@@ -27,7 +27,7 @@ public class SwingMain
         RealFileSystem fs,
         PrintStream out,
         Locale locale,
-        BitmapCache<SwingBitmap> bitmapCache,
+        BitmapCacheProxy<SwingBitmap> bitmapCacheProxy,
         Config uiConfig,
         Sound sound
     )
@@ -35,7 +35,7 @@ public class SwingMain
         this.fs = fs;
         this.out = out;
         this.locale = locale;
-        this.bitmapCache = bitmapCache;
+        this.bitmapCacheProxy = bitmapCacheProxy;
         this.uiConfig = uiConfig;
         this.sound = sound;
     }
@@ -59,7 +59,7 @@ public class SwingMain
             new RealFileSystem(),
             System.out,
             locale,
-            new BitmapCache<>(
+            new BitmapCacheProxy<>(
                 new SwingBitmapLoader(), new SwingBitmapScaler(), cacheSize() ),
             config,
             sound
@@ -83,7 +83,7 @@ public class SwingMain
             {
                 MainJFrame frame = new MainJFrame( uiConfig, sound );
                 new MenuUi(
-                    fs, out, locale, bitmapCache, uiConfig, frame, sound );
+                    fs, out, locale, bitmapCacheProxy, uiConfig, frame, sound );
             }
         } );
     }

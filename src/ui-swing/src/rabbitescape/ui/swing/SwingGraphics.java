@@ -208,7 +208,7 @@ public class SwingGraphics implements Graphics
     public SwingGraphics(
         World world,
         GameUi jframe,
-        BitmapCache<SwingBitmap> bitmapCache,
+        BitmapCacheProxy<SwingBitmap> bitmapCacheProxy,
         Sound sound,
         FrameDumper frameDumper,
         WaterAnimation waterAnimation
@@ -221,7 +221,7 @@ public class SwingGraphics implements Graphics
             world, new AnimationCacheProxy( new AnimationLoader() ) );
 
         this.renderer = new Renderer<SwingBitmap, SwingPaint>(
-            0, 0, -1, bitmapCache );
+            0, 0, -1, bitmapCacheProxy );
 
         this.soundPlayer = new SoundPlayer( sound );
 

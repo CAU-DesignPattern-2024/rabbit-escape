@@ -16,7 +16,7 @@ import javax.swing.*;
 import rabbitescape.engine.Token;
 import rabbitescape.engine.config.Config;
 import rabbitescape.engine.config.ConfigTools;
-import rabbitescape.render.BitmapCache;
+import rabbitescape.render.BitmapCacheProxy;
 
 class GameMenu
 {
@@ -36,7 +36,7 @@ class GameMenu
     public final JButton back;
 
 
-    private final BitmapCache<SwingBitmap> bitmapCache;
+    private final BitmapCacheProxy<SwingBitmap> bitmapCacheProxy;
     private final Color backgroundColor;
 
     private final JPanel panel;
@@ -44,14 +44,14 @@ class GameMenu
 
     public GameMenu(
         Container contentPane,
-        BitmapCache<SwingBitmap> bitmapCache,
+        BitmapCacheProxy<SwingBitmap> bitmapCacheProxy,
         Dimension buttonSizeInPixels,
         Config uiConfig,
         Color backgroundColor,
         Map<Token.Type, Integer> abilityTypes
     )
     {
-        this.bitmapCache = bitmapCache;
+        this.bitmapCacheProxy = bitmapCacheProxy;
         this.backgroundColor = backgroundColor;
         this.panel = createPanel();
 
@@ -247,7 +247,7 @@ class GameMenu
     private ImageIcon getIcon( String name )
     {
         return new ImageIcon(
-            bitmapCache.get( name, ICON_SIZE ).image );
+            bitmapCacheProxy.get( name, ICON_SIZE ).image );
     }
 
     public void addAbilitiesListener( final AbilityChangedListener listener )

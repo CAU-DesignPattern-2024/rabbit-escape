@@ -218,7 +218,7 @@ public class SwingGraphics implements Graphics
         this.jframe = jframe;
         this.strategy = jframe.canvas.getBufferStrategy();
         this.animator = new SpriteAnimator(
-            world, new AnimationCache( new AnimationLoader() ) );
+            world, new AnimationCacheProxy( new AnimationLoader() ) );
 
         this.renderer = new Renderer<SwingBitmap, SwingPaint>(
             0, 0, -1, bitmapCache );

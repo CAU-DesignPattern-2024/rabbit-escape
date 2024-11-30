@@ -6,6 +6,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import rabbitescape.engine.util.Util;
+import rabbitescape.ui.swing.state.BugIssueState;
+import rabbitescape.ui.swing.state.IssueState;
+import rabbitescape.ui.swing.state.LevelIssueState;
+import rabbitescape.ui.swing.state.DefaultIssueState;
 
 /**
  * @brief encapsulates what has been retrieved about a github issue
@@ -21,6 +25,7 @@ public class GitHubIssue
     private ArrayList<String> wrappedWorlds;
     /** @brief Some issues have multiple worlds: current selected index */
     private int worldIndex = 0;
+    private IssueState state;
 
     private static final String replaceWorldsWith = "\n-----\n";
     private static final String commentSeparator = "\n*****\n";
@@ -38,26 +43,39 @@ public class GitHubIssue
             new String[] {} );
     }
 
-    public GitHubIssue( int gitHubIssueNumber,
+    public GitHubIssue(int gitHubIssueNumber,
         String gitHubIssueTitle,
         String openingCommentBody,
-        String[] labels )
+        String[] labels)
     {
         wrappedWorlds = new ArrayList<String>();
         number = gitHubIssueNumber;
-        addToBody( openingCommentBody );
-        title = stripEscape( gitHubIssueTitle );
-        for ( int i = 0; i < labels.length; i++ )
-        {
-            if ( 0 == labels[i].compareTo( "bug" ) )
-            {
-                isBug = true;
+        addToBody(openingCommentBody);
+        title = stripEscape(gitHubIssueTitle);
+        state = new DefaultIssueState();  // 기본 상태로 시작
+
+        for (String label : labels) {
+            if ("bug".equals(label)) {
+                setState(new BugIssueState());
             }
-            else if ( 0 == labels[i].compareTo( "level" ) )
-            {
-                isLevel = true;
+            else if ("level".equals(label)) {
+                setState(new LevelIssueState());
             }
         }
+    }
+
+    private void setState(IssueState newState) {
+        this.state = newState;
+        state.handleIssue(this);
+    }
+
+    // getter/setter 추가
+    public void setIsBug(boolean isBug) {
+        this.isBug = isBug;
+    }
+
+    public void setIsLevel(boolean isLevel) {
+        this.isLevel = isLevel;
     }
 
     public int getNumber()

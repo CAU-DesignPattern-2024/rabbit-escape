@@ -17,8 +17,6 @@ import rabbitescape.ui.swing.state.DefaultIssueState;
 public class GitHubIssue
 {
     private int number; /** < @brief github issue number. */
-    private boolean isLevel;
-    private boolean isBug;
     private String body = ""; /** < @brief body text excluding world text. */
     private String title;
     /** @brief Worlds are []. These have \n */
@@ -71,15 +69,6 @@ public class GitHubIssue
         }
     }
 
-    // getter/setter 추가
-    public void setIsBug(boolean isBug) {
-        this.isBug = isBug;
-    }
-
-    public void setIsLevel(boolean isLevel) {
-        this.isLevel = isLevel;
-    }
-
     public int getNumber()
     {
         return number;
@@ -87,12 +76,12 @@ public class GitHubIssue
 
     public boolean isLevel()
     {
-        return isLevel;
+        return state.getType().equals("level");
     }
 
     public boolean isBug()
     {
-        return isBug;
+        return state.getType().equals("bug");
     }
 
     /**

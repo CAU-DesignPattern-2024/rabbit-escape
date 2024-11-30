@@ -1,7 +1,6 @@
 package rabbitescape.engine.events;
 
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 import org.junit.Before;
 import org.junit.Test;
 import rabbitescape.engine.LevelWinListener;
@@ -67,13 +66,13 @@ public class LevelWinListenerAdapterTest {
         adapter.won();
         
         // Assert
-        assertThat(originalListener.wonCalled, is(true));
-        assertThat(originalListener.lostCalled, is(false));
+        assertTrue(originalListener.wonCalled);
+        assertFalse(originalListener.lostCalled);
         
         GameEvent event = eventListener.getLastEvent();
-        assertThat(event, is(notNullValue()));
-        assertThat(event.getType(), is(EventType.LEVEL_WON));
-        assertThat((Boolean)event.getEventData().get("won"), is(true));
+        assertNotNull(event);
+        assertEquals(EventType.LEVEL_WON, event.getType());
+        assertTrue((Boolean)event.getEventData().get("won"));
     }
     
     @Test
@@ -82,13 +81,13 @@ public class LevelWinListenerAdapterTest {
         adapter.lost();
         
         // Assert
-        assertThat(originalListener.wonCalled, is(false));
-        assertThat(originalListener.lostCalled, is(true));
+        assertFalse(originalListener.wonCalled);
+        assertTrue(originalListener.lostCalled);
         
         GameEvent event = eventListener.getLastEvent();
-        assertThat(event, is(notNullValue()));
-        assertThat(event.getType(), is(EventType.LEVEL_LOST));
-        assertThat((Boolean)event.getEventData().get("won"), is(false));
+        assertNotNull(event);
+        assertEquals(EventType.LEVEL_LOST, event.getType());
+        assertFalse((Boolean)event.getEventData().get("won"));
     }
     
     @Test
@@ -98,9 +97,9 @@ public class LevelWinListenerAdapterTest {
         
         // Act & Assert - should not throw exception
         adapter.won();
-        assertThat(eventListener.getLastEvent().getType(), is(EventType.LEVEL_WON));
+        assertEquals(EventType.LEVEL_WON, eventListener.getLastEvent().getType());
         
         adapter.lost();
-        assertThat(eventListener.getLastEvent().getType(), is(EventType.LEVEL_LOST));
+        assertEquals(EventType.LEVEL_LOST, eventListener.getLastEvent().getType());
     }
 }

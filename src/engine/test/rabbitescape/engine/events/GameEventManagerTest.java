@@ -1,7 +1,6 @@
 package rabbitescape.engine.events;
 
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.ArrayList;
@@ -42,10 +41,11 @@ public class GameEventManagerTest {
         manager.fireEvent(new TestGameEvent(EventType.RABBIT_MOVED, "test"));
         
         // Assert
-        assertThat(listener.getReceivedEvents().size(), is(1));
+        assertEquals(1, listener.getReceivedEvents().size());
         GameEvent event = listener.getReceivedEvents().get(0);
-        assertThat(event.getType(), is(EventType.RABBIT_MOVED));
-        assertThat(event.getEventData().get("testData"), is("test"));
+        assertEquals(EventType.RABBIT_MOVED, event.getType());
+        assertTrue(event.getEventData().containsKey("testData"));
+        assertEquals("test", event.getEventData().get("testData"));
     }
     
     @Test
@@ -58,7 +58,7 @@ public class GameEventManagerTest {
         manager.fireEvent(new TestGameEvent(EventType.RABBIT_MOVED, "test"));
         
         // Assert
-        assertThat(listener.getReceivedEvents().size(), is(0));
+        assertEquals(0, listener.getReceivedEvents().size());
     }
     
     @Test
@@ -72,8 +72,8 @@ public class GameEventManagerTest {
         manager.fireEvent(new TestGameEvent(EventType.RABBIT_MOVED, "test"));
         
         // Assert
-        assertThat(listener.getReceivedEvents().size(), is(1));
-        assertThat(otherListener.getReceivedEvents().size(), is(0));
+        assertEquals(1, listener.getReceivedEvents().size());
+        assertEquals(0, otherListener.getReceivedEvents().size());
     }
     
     @Test
@@ -87,7 +87,7 @@ public class GameEventManagerTest {
         manager.fireEvent(new TestGameEvent(EventType.RABBIT_MOVED, "test"));
         
         // Assert
-        assertThat(listener.getReceivedEvents().size(), is(1));
-        assertThat(listener2.getReceivedEvents().size(), is(1));
+        assertEquals(1, listener.getReceivedEvents().size());
+        assertEquals(1, listener2.getReceivedEvents().size());
     }
 }

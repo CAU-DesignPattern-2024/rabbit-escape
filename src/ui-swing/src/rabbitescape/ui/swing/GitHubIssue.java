@@ -64,9 +64,11 @@ public class GitHubIssue
         }
     }
 
-    private void setState(IssueState newState) {
-        this.state = newState;
-        state.handleIssue(this);
+    public void setState(IssueState newState) {
+        if(newState != null) {
+            this.state = newState;
+            state.handleIssue(this);
+        }
     }
 
     // getter/setter 추가

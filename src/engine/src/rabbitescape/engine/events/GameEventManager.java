@@ -8,7 +8,7 @@ public class GameEventManager {
     public GameEventManager() {
         this.listeners = new HashMap<>();
         for (EventType type : EventType.values()) {
-            listeners.put(type, new ArrayList<>());
+            listeners.put(type, new ArrayList<GameEventListener>());
         }
     }
 

@@ -11,6 +11,7 @@ import java.util.Map;
 import rabbitescape.engine.Rabbit.Type;
 import rabbitescape.engine.WaterRegion;
 import rabbitescape.engine.err.RabbitEscapeException;
+import rabbitescape.engine.events.*;
 import rabbitescape.engine.textworld.Comment;
 import rabbitescape.engine.util.Dimension;
 import rabbitescape.engine.util.LookupTable2D;
@@ -132,6 +133,8 @@ public class World
     public final String music;
     public final VoidMarkerStyle.Style voidStyle;
 
+    private final GameEventManager eventManager;
+
     public World(
         Dimension size,
         List<Block> blocks,
@@ -194,7 +197,8 @@ public class World
                 waterAmounts );
         }
 
-        this.changes = new WorldChanges( this, statsListener );
+        this.eventManager = new GameEventManager();
+        this.changes = new WorldChanges( this, new WorldStatsListenerAdapter(statsListener, eventManager) );
 
         init();
     }
@@ -249,7 +253,8 @@ public class World
         this.comments = comments;
         this.voidStyle = voidStyle;
 
-        this.changes = new WorldChanges( this, statsListener );
+        this.eventManager = new GameEventManager();
+        this.changes = new WorldChanges( this, new WorldStatsListenerAdapter(statsListener, eventManager) );
 
         init();
     }
@@ -497,5 +502,17 @@ public class World
             }
         }
         return waterAmounts;
+    }
+
+    public void addEventListener(EventType type, GameEventListener listener) {
+        eventManager.addEventListener(type, listener);
+    }
+
+    public void removeEventListener(EventType type, GameEventListener listener) {
+        eventManager.removeEventListener(type, listener);
+    }
+
+    public GameEventManager getEventManager() {
+        return eventManager;
     }
 }

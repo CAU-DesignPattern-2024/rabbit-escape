@@ -160,7 +160,6 @@ public class World
         boolean paused,
         Comment[] comments,
         WorldStatsListener statsListener,
-        LevelWinListener winListener,
         VoidMarkerStyle.Style voidStyle
     )
     {
@@ -201,7 +200,7 @@ public class World
 
         this.eventManager = new GameEventManager();
         this.changes = new WorldChanges( this, new WorldStatsListenerAdapter(statsListener, eventManager) );
-        this.levelWinListener = new LevelWinListenerAdapter(winListener, eventManager);
+        this.levelWinListener = null;
 
         init();
     }
@@ -212,7 +211,7 @@ public class World
         List<Rabbit> rabbits,
         List<Thing> things,
         LookupTable2D<WaterRegion> waterTable,
-        Map<rabbitescape.engine.Token.Type, Integer> abilities,
+        Map<Token.Type, Integer> abilities,
         String name,
         String description,
         String author_name,
@@ -229,9 +228,9 @@ public class World
         int rabbit_index_count,
         boolean paused,
         Comment[] comments,
-        IgnoreWorldStatsListener statsListener,
-        LevelWinListener winListener,
-        VoidMarkerStyle.Style voidStyle )
+        WorldStatsListener statsListener,
+        VoidMarkerStyle.Style voidStyle
+    )
     {
         this.size = size;
         this.blockTable = blockTable;
@@ -258,8 +257,8 @@ public class World
         this.voidStyle = voidStyle;
 
         this.eventManager = new GameEventManager();
-        this.changes = new WorldChanges( this, new WorldStatsListenerAdapter(statsListener, eventManager) );
-        this.levelWinListener = new LevelWinListenerAdapter(winListener, eventManager);
+        this.changes = new WorldChanges(this, new WorldStatsListenerAdapter(statsListener, eventManager));
+        this.levelWinListener = null;
 
         init();
     }
@@ -522,6 +521,22 @@ public class World
     }
 
     public void setLevelWinListener(LevelWinListener listener) {
-        this.levelWinListener = new LevelWinListenerAdapter(listener, eventManager);
+        if (listener != null) {
+            this.levelWinListener = new LevelWinListenerAdapter(listener, eventManager);
+        } else {
+            this.levelWinListener = null;
+        }
+    }
+
+    public void won() {
+        if (levelWinListener != null) {
+            levelWinListener.won();
+        }
+    }
+
+    public void lost() {
+        if (levelWinListener != null) {
+            levelWinListener.lost();
+        }
     }
 }

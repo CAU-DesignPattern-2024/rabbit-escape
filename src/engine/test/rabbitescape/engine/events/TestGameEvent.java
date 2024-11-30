@@ -11,12 +11,8 @@ public class TestGameEvent implements GameEvent {
     private String testData;
 
     public TestGameEvent() {
-        this(EventType.RABBIT_MOVED, "default");
-    }
-
-    public TestGameEvent(EventType type, String testData) {
-        this.type = type;
-        this.testData = testData;
+        this.type = EventType.RABBIT_MOVED;
+        this.testData = "default";
     }
 
     @Override

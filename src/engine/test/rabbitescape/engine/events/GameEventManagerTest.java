@@ -38,14 +38,15 @@ public class GameEventManagerTest {
     public void addEventListener_shouldAddListener() {
         // Act
         manager.addEventListener(EventType.RABBIT_MOVED, listener);
-        manager.fireEvent(new TestGameEvent(EventType.RABBIT_MOVED, "test"));
+        TestGameEvent event = new TestGameEvent();
+        event.setTestData("test");
+        manager.fireEvent(event);
         
         // Assert
         assertEquals(1, listener.getReceivedEvents().size());
-        GameEvent event = listener.getReceivedEvents().get(0);
-        assertEquals(EventType.RABBIT_MOVED, event.getType());
-        assertTrue(event.getEventData().containsKey("testData"));
-        assertEquals("test", event.getEventData().get("testData"));
+        GameEvent receivedEvent = listener.getReceivedEvents().get(0);
+        assertEquals(EventType.RABBIT_MOVED, receivedEvent.getType());
+        assertEquals("test", receivedEvent.getEventData().get("testData"));
     }
     
     @Test
@@ -55,7 +56,9 @@ public class GameEventManagerTest {
         
         // Act
         manager.removeEventListener(EventType.RABBIT_MOVED, listener);
-        manager.fireEvent(new TestGameEvent(EventType.RABBIT_MOVED, "test"));
+        TestGameEvent event = new TestGameEvent();
+        event.setTestData("test");
+        manager.fireEvent(event);
         
         // Assert
         assertEquals(0, listener.getReceivedEvents().size());
@@ -69,7 +72,9 @@ public class GameEventManagerTest {
         manager.addEventListener(EventType.LEVEL_WON, otherListener);
         
         // Act
-        manager.fireEvent(new TestGameEvent(EventType.RABBIT_MOVED, "test"));
+        TestGameEvent event = new TestGameEvent();
+        event.setTestData("test");
+        manager.fireEvent(event);
         
         // Assert
         assertEquals(1, listener.getReceivedEvents().size());
@@ -84,7 +89,9 @@ public class GameEventManagerTest {
         manager.addEventListener(EventType.RABBIT_MOVED, listener2);
         
         // Act
-        manager.fireEvent(new TestGameEvent(EventType.RABBIT_MOVED, "test"));
+        TestGameEvent event = new TestGameEvent();
+        event.setTestData("test");
+        manager.fireEvent(event);
         
         // Assert
         assertEquals(1, listener.getReceivedEvents().size());

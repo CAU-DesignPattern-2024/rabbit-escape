@@ -3,6 +3,7 @@ package rabbitescape.ui.swing;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import static rabbitescape.engine.i18n.Translation.t;
 
@@ -12,11 +13,11 @@ import static rabbitescape.engine.i18n.Translation.t;
 public class GitHubClient implements GitHubPageFetchNotifier
 {
     public final String baseURL =
-        "https://api.github.com/repos/andybalaam/rabbit-escape/issues";
+    "https://api.github.com/repos/andybalaam/rabbit-escape/issues";
     public final String acceptHeader = "Accept: application/vnd.github.v3+json";
     private ArrayList<GitHubIssue> issues = null;
     private String errMsg = "";
-    private int page = 1;
+    private int page = 1;              
     /** < .../issues?page=number */
     private boolean gotAllPages = false;
 
@@ -89,31 +90,35 @@ public class GitHubClient implements GitHubPageFetchNotifier
         return -1;
     }
 
-    private static ArrayList<GitHubIssue> parseIssues( String json )
-    { // / @TODO this is extremely crufty: hacking out most of the URL to split
-      // on.
-      // This leaves the issue number as the first thing in the string.
+    private static ArrayList<GitHubIssue> parseIssues(String json)
+    {
         Pattern issuePattern = Pattern.compile(
             "\\{\"url\":\"https://api\\.github\\.com" +
-            "/repos/andybalaam/rabbit-escape/issues/" );
-        String[] jsonIssuesStrings = issuePattern.split( json );
+            "/repos/andybalaam/rabbit-escape/issues/\\d+\".*?\\}(?=,\\{|\\])",
+            Pattern.DOTALL
+        );
+        
         ArrayList<GitHubIssue> ret = new ArrayList<GitHubIssue>();
-        for ( int i = 0; i < jsonIssuesStrings.length; i++ )
+        Matcher matcher = issuePattern.matcher(json);
+        
+        while (matcher.find())
         {
-            String jsonIssue = jsonIssuesStrings[i];
-            if ( !"0123456789".contains( jsonIssue.substring( 0, 1 ) ) )
+            try
             {
-                continue;
+                String jsonIssue = matcher.group();
+                GitHubIssue ghi = new GitHubIssue(
+                    GitHubJsonTools.getIntValue( jsonIssue, "number" ),
+                    GitHubJsonTools.getStringValue( jsonIssue, "title" ),
+                    GitHubJsonTools.getStringValue( jsonIssue, "body" ),
+                    GitHubJsonTools.getStringValuesFromArrayOfObjects( jsonIssue,
+                        "labels.name" )
+                    );
+                ret.add( ghi );
             }
-
-            GitHubIssue ghi = new GitHubIssue(
-                GitHubJsonTools.getIntValue( jsonIssue, "number" ),
-                GitHubJsonTools.getStringValue( jsonIssue, "title" ),
-                GitHubJsonTools.getStringValue( jsonIssue, "body" ),
-                GitHubJsonTools.getStringValuesFromArrayOfObjects( jsonIssue,
-                    "labels.name" )
-                );
-            ret.add( ghi );
+            catch (Exception e)
+            {
+                System.err.println("Error parsing issue: " + e.getMessage());
+            }
         }
         return ret;
     }

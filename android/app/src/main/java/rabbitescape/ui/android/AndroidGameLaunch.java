@@ -6,7 +6,7 @@ import rabbitescape.engine.LevelWinListener;
 import rabbitescape.engine.Token;
 import rabbitescape.engine.World;
 import rabbitescape.engine.config.Config;
-import rabbitescape.render.BitmapCache;
+import rabbitescape.render.BitmapCacheProxy;
 import rabbitescape.render.SoundPlayer;
 import rabbitescape.render.gameloop.GameLoop;
 import rabbitescape.render.gameloop.GeneralPhysics;
@@ -34,7 +34,7 @@ public class AndroidGameLaunch implements Runnable
     public Token.Type chosenAbility;
 
     public AndroidGameLaunch(
-        BitmapCache<AndroidBitmap> bitmapCache,
+        BitmapCacheProxy<AndroidBitmap> bitmapCacheProxy,
         Config config,
         World world,
         LevelWinListener winListener,

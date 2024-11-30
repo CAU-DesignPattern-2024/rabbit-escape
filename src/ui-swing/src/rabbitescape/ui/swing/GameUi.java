@@ -29,7 +29,7 @@ import rabbitescape.engine.config.Config;
 import rabbitescape.engine.config.ConfigTools;
 import rabbitescape.engine.config.TapTimer;
 import rabbitescape.engine.solution.SelectAction;
-import rabbitescape.render.BitmapCache;
+import rabbitescape.render.BitmapCacheProxy;
 import rabbitescape.render.gameloop.Physics.StatsChangedListener;
 
 public class GameUi implements StatsChangedListener
@@ -197,7 +197,7 @@ public class GameUi implements StatsChangedListener
     public Dimension worldSizeInPixels;
     private int worldTileSizeInPixels;
     private final Config uiConfig;
-    private final BitmapCache<SwingBitmap> bitmapCache;
+    private final BitmapCacheProxy<SwingBitmap> bitmapCacheProxy;
     private final MainJFrame frame;
     private final MenuUi menuUi;
 
@@ -219,13 +219,13 @@ public class GameUi implements StatsChangedListener
 
     public GameUi(
         Config uiConfig,
-        BitmapCache<SwingBitmap> bitmapCache,
+        BitmapCacheProxy<SwingBitmap> bitmapCacheProxy,
         MainJFrame frame,
         MenuUi menuUi
     )
     {
         this.uiConfig = uiConfig;
-        this.bitmapCache = bitmapCache;
+        this.bitmapCacheProxy = bitmapCacheProxy;
         this.frame = frame;
         this.menuUi = menuUi;
 
@@ -474,7 +474,7 @@ public class GameUi implements StatsChangedListener
 
         this.menu = new GameMenu(
             contentPane,
-            bitmapCache,
+            bitmapCacheProxy,
             buttonSizeInPixels,
             uiConfig,
             backgroundColor,

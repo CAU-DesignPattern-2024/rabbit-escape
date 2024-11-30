@@ -6,7 +6,7 @@ import android.view.SurfaceHolder;
 import rabbitescape.engine.LevelWinListener;
 import rabbitescape.engine.World;
 import rabbitescape.engine.config.Config;
-import rabbitescape.render.BitmapCache;
+import rabbitescape.render.BitmapCacheProxy;
 
 public class Game
 {
@@ -14,7 +14,7 @@ public class Game
     private Thread thread;
 
     public Game(
-        BitmapCache<AndroidBitmap> bitmapCache,
+        BitmapCacheProxy<AndroidBitmap> bitmapCacheProxy,
         Config config,
         World world,
         LevelWinListener winListener,
@@ -22,7 +22,7 @@ public class Game
     )
     {
         gameLaunch = new AndroidGameLaunch(
-            bitmapCache,
+            bitmapCacheProxy,
             config,
             world,
             winListener,

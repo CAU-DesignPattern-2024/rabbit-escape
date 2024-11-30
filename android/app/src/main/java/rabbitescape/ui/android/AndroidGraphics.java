@@ -13,7 +13,7 @@ import rabbitescape.engine.util.MathUtil;
 import rabbitescape.engine.util.Util;
 import rabbitescape.render.AnimationCache;
 import rabbitescape.render.AnimationLoader;
-import rabbitescape.render.BitmapCache;
+import rabbitescape.render.BitmapCacheProxy;
 import rabbitescape.render.GraphPaperBackground;
 import rabbitescape.render.PolygonBuilder;
 import rabbitescape.render.Overlay;
@@ -37,7 +37,7 @@ public class AndroidGraphics implements Graphics
     private final SoundPlayer soundPlayer;
     private final World world;
     private final WaterAnimation waterAnimation;
-    private final AnimationCache animationCache;
+    private final AnimationCacheProxy animationCacheProxy;
     private final AndroidPaint paint;
 
     /**
@@ -270,7 +270,7 @@ public class AndroidGraphics implements Graphics
             new Renderer<AndroidBitmap, AndroidPaint>(
                 offsetX, offsetY, (int)renderingTileSize, bitmapCache );
 
-        SpriteAnimator animator = new SpriteAnimator( world, animationCache );
+        SpriteAnimator animator = new SpriteAnimator( world, animationCacheProxy );
 
         GraphPaperBackground.drawBackground(
             world, renderer, androidCanvas, white, graphPaperMajor, graphPaperMinor );

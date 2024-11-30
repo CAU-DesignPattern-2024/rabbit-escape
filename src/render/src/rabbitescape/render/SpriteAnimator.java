@@ -9,7 +9,7 @@ import rabbitescape.engine.util.Util;
 public class SpriteAnimator
 {
     private final World world;
-    private final AnimationCache animationCache;
+    private final AnimationCacheProxy animationCacheProxy;
 
     private static final String[] metal_block = new String[]
         {
@@ -48,11 +48,11 @@ public class SpriteAnimator
 
     public SpriteAnimator(
         World world,
-        AnimationCache animationCache
+        AnimationCacheProxy animationCacheProxy
     )
     {
         this.world = world;
-        this.animationCache = animationCache;
+        this.animationCacheProxy = animationCacheProxy;
     }
 
     public List<Sprite> getSprites( int frameNum )
@@ -166,7 +166,7 @@ public class SpriteAnimator
             return null;
         }
 
-        Animation animation = animationCache.get( thing.stateName() );
+        Animation animation = animationCacheProxy.get( thing.stateName() );
 
         if ( animation == null )
         {

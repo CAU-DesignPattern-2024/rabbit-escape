@@ -6,24 +6,25 @@ import rabbitescape.render.androidlike.Bitmap;
 import rabbitescape.render.androidlike.Canvas;
 import rabbitescape.render.androidlike.Paint;
 
+
 public class Renderer<T extends Bitmap, P extends Paint>
 {
     public int offsetX;
     public int offsetY;
     public int tileSize;
-    private final BitmapCache<T> bitmapCache;
+    private final BitmapCacheProxy<T> bitmapCacheProxy;
 
     public Renderer(
         int offsetX,
         int offsetY,
         int tileSize,
-        BitmapCache<T> bitmapCache
+        BitmapCacheProxy<T> bitmapCacheProxy
     )
     {
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.tileSize = tileSize;
-        this.bitmapCache = bitmapCache;
+        this.bitmapCacheProxy = bitmapCacheProxy;
     }
 
     public void render( Canvas<T, P> canvas, List<Sprite> sprites, P paint )
@@ -39,7 +40,7 @@ public class Renderer<T extends Bitmap, P extends Paint>
 
     private void drawSprite( Canvas<T, P> canvas, Sprite sprite, P paint )
     {
-        T bitmap = bitmapCache.get( sprite.bitmapName, tileSize );
+        T bitmap = bitmapCacheProxy.get( sprite.bitmapName, tileSize );
 
         int left = sprite.offsetX( tileSize )
             + offsetX + ( sprite.tileX * tileSize );

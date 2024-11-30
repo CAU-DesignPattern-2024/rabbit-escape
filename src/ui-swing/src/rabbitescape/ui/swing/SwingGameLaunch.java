@@ -122,7 +122,7 @@ public class SwingGameLaunch implements GameLaunch
         this.graphics = new SwingGraphics(
             world,
             uiPieces.jframe,
-            uiPieces.bitmapCache,
+            uiPieces.bitmapCacheProxy,
             sound,
             frameDumper,
             waterAnimation

@@ -18,7 +18,7 @@ import javax.swing.JToggleButton;
 
 import rabbitescape.engine.config.Config;
 import rabbitescape.engine.config.ConfigTools;
-import rabbitescape.render.BitmapCache;
+import rabbitescape.render.BitmapCacheProxy;
 
 class SideMenu
 {
@@ -28,7 +28,7 @@ class SideMenu
     public final JButton back;
     public final JButton exit;
 
-    private final BitmapCache<SwingBitmap> bitmapCache;
+    private final BitmapCacheProxy<SwingBitmap> bitmapCacheProxy;
     private final Color backgroundColor;
     private final Dimension buttonSizeInPixels;
 
@@ -36,13 +36,13 @@ class SideMenu
 
     public SideMenu(
         Container contentPane,
-        BitmapCache<SwingBitmap> bitmapCache,
+        BitmapCacheProxy<SwingBitmap> bitmapCacheProxy,
         Dimension buttonSizeInPixels,
         Config uiConfig,
         Color backgroundColor
     )
     {
-        this.bitmapCache = bitmapCache;
+        this.bitmapCacheProxy = bitmapCacheProxy;
         this.backgroundColor = backgroundColor;
         this.buttonSizeInPixels = buttonSizeInPixels;
         this.panel = createPanel( contentPane );
@@ -145,6 +145,6 @@ class SideMenu
     private ImageIcon getIcon( String name )
     {
         return new ImageIcon(
-            bitmapCache.get( name, ICON_SIZE ).image );
+            bitmapCacheProxy.get( name, ICON_SIZE ).image );
     }
 }

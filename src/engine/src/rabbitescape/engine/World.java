@@ -134,6 +134,7 @@ public class World
     public final VoidMarkerStyle.Style voidStyle;
 
     private final GameEventManager eventManager;
+    private LevelWinListener levelWinListener;
 
     public World(
         Dimension size,
@@ -159,6 +160,7 @@ public class World
         boolean paused,
         Comment[] comments,
         WorldStatsListener statsListener,
+        LevelWinListener winListener,
         VoidMarkerStyle.Style voidStyle
     )
     {
@@ -199,6 +201,7 @@ public class World
 
         this.eventManager = new GameEventManager();
         this.changes = new WorldChanges( this, new WorldStatsListenerAdapter(statsListener, eventManager) );
+        this.levelWinListener = new LevelWinListenerAdapter(winListener, eventManager);
 
         init();
     }
@@ -227,6 +230,7 @@ public class World
         boolean paused,
         Comment[] comments,
         IgnoreWorldStatsListener statsListener,
+        LevelWinListener winListener,
         VoidMarkerStyle.Style voidStyle )
     {
         this.size = size;
@@ -255,6 +259,7 @@ public class World
 
         this.eventManager = new GameEventManager();
         this.changes = new WorldChanges( this, new WorldStatsListenerAdapter(statsListener, eventManager) );
+        this.levelWinListener = new LevelWinListenerAdapter(winListener, eventManager);
 
         init();
     }
@@ -514,5 +519,9 @@ public class World
 
     public GameEventManager getEventManager() {
         return eventManager;
+    }
+
+    public void setLevelWinListener(LevelWinListener listener) {
+        this.levelWinListener = new LevelWinListenerAdapter(listener, eventManager);
     }
 }

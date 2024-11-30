@@ -1,12 +1,17 @@
 package rabbitescape.engine.events;
 
+import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.*;
-
+import org.junit.Before;
 import org.junit.Test;
 import rabbitescape.engine.LevelWinListener;
 
 public class LevelWinListenerAdapterTest {
+    
+    private GameEventManager eventManager;
+    private TestLevelWinListener originalListener;
+    private TestGameEventListener eventListener;
+    private LevelWinListenerAdapter adapter;
     
     private static class TestLevelWinListener implements LevelWinListener {
         private boolean wonCalled = false;
@@ -45,16 +50,19 @@ public class LevelWinListenerAdapterTest {
         }
     }
     
-    @Test
-    public void won_shouldCallOriginalListenerAndFireEvent() {
-        // Arrange
-        GameEventManager eventManager = new GameEventManager();
-        TestLevelWinListener originalListener = new TestLevelWinListener();
-        TestGameEventListener eventListener = new TestGameEventListener();
-        LevelWinListenerAdapter adapter = new LevelWinListenerAdapter(originalListener, eventManager);
+    @Before
+    public void setUp() {
+        eventManager = new GameEventManager();
+        originalListener = new TestLevelWinListener();
+        eventListener = new TestGameEventListener();
+        adapter = new LevelWinListenerAdapter(originalListener, eventManager);
         
         eventManager.addEventListener(EventType.LEVEL_WON, eventListener);
-        
+        eventManager.addEventListener(EventType.LEVEL_LOST, eventListener);
+    }
+    
+    @Test
+    public void won_shouldCallOriginalListenerAndFireEvent() {
         // Act
         adapter.won();
         
@@ -62,21 +70,14 @@ public class LevelWinListenerAdapterTest {
         assertThat(originalListener.wonCalled, is(true));
         assertThat(originalListener.lostCalled, is(false));
         
-        assertThat(eventListener.getLastEvent(), is(notNullValue()));
-        assertThat(eventListener.getLastEvent().getType(), is(EventType.LEVEL_WON));
-        assertThat((Boolean)eventListener.getLastEvent().getEventData().get("won"), is(true));
+        GameEvent event = eventListener.getLastEvent();
+        assertThat(event, is(notNullValue()));
+        assertThat(event.getType(), is(EventType.LEVEL_WON));
+        assertThat((Boolean)event.getEventData().get("won"), is(true));
     }
     
     @Test
     public void lost_shouldCallOriginalListenerAndFireEvent() {
-        // Arrange
-        GameEventManager eventManager = new GameEventManager();
-        TestLevelWinListener originalListener = new TestLevelWinListener();
-        TestGameEventListener eventListener = new TestGameEventListener();
-        LevelWinListenerAdapter adapter = new LevelWinListenerAdapter(originalListener, eventManager);
-        
-        eventManager.addEventListener(EventType.LEVEL_LOST, eventListener);
-        
         // Act
         adapter.lost();
         
@@ -84,20 +85,16 @@ public class LevelWinListenerAdapterTest {
         assertThat(originalListener.wonCalled, is(false));
         assertThat(originalListener.lostCalled, is(true));
         
-        assertThat(eventListener.getLastEvent(), is(notNullValue()));
-        assertThat(eventListener.getLastEvent().getType(), is(EventType.LEVEL_LOST));
-        assertThat((Boolean)eventListener.getLastEvent().getEventData().get("won"), is(false));
+        GameEvent event = eventListener.getLastEvent();
+        assertThat(event, is(notNullValue()));
+        assertThat(event.getType(), is(EventType.LEVEL_LOST));
+        assertThat((Boolean)event.getEventData().get("won"), is(false));
     }
     
     @Test
     public void adapter_shouldWorkWithNullOriginalListener() {
         // Arrange
-        GameEventManager eventManager = new GameEventManager();
-        TestGameEventListener eventListener = new TestGameEventListener();
-        LevelWinListenerAdapter adapter = new LevelWinListenerAdapter(null, eventManager);
-        
-        eventManager.addEventListener(EventType.LEVEL_WON, eventListener);
-        eventManager.addEventListener(EventType.LEVEL_LOST, eventListener);
+        adapter = new LevelWinListenerAdapter(null, eventManager);
         
         // Act & Assert - should not throw exception
         adapter.won();
@@ -105,26 +102,5 @@ public class LevelWinListenerAdapterTest {
         
         adapter.lost();
         assertThat(eventListener.getLastEvent().getType(), is(EventType.LEVEL_LOST));
-    }
-    
-    @Test
-    public void events_shouldContainCorrectData() {
-        // Arrange
-        GameEventManager eventManager = new GameEventManager();
-        TestGameEventListener eventListener = new TestGameEventListener();
-        LevelWinListenerAdapter adapter = new LevelWinListenerAdapter(null, eventManager);
-        
-        eventManager.addEventListener(EventType.LEVEL_WON, eventListener);
-        eventManager.addEventListener(EventType.LEVEL_LOST, eventListener);
-        
-        // Act & Assert for win
-        adapter.won();
-        assertThat(eventListener.getLastEvent().getEventData().containsKey("won"), is(true));
-        assertThat((Boolean)eventListener.getLastEvent().getEventData().get("won"), is(true));
-        
-        // Act & Assert for loss
-        adapter.lost();
-        assertThat(eventListener.getLastEvent().getEventData().containsKey("won"), is(true));
-        assertThat((Boolean)eventListener.getLastEvent().getEventData().get("won"), is(false));
     }
 }

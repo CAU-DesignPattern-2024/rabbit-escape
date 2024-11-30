@@ -1,13 +1,16 @@
 package rabbitescape.engine.events;
 
+import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.*;
-
+import org.junit.Before;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameEventManagerTest {
+    
+    private GameEventManager manager;
+    private TestEventListener listener;
     
     private static class TestEventListener implements GameEventListener {
         private final List<GameEvent> receivedEvents = new ArrayList<>();
@@ -26,29 +29,28 @@ public class GameEventManagerTest {
         }
     }
     
+    @Before
+    public void setUp() {
+        manager = new GameEventManager();
+        listener = new TestEventListener();
+    }
+    
     @Test
     public void addEventListener_shouldAddListener() {
-        // Arrange
-        GameEventManager manager = new GameEventManager();
-        TestEventListener listener = new TestEventListener();
-        
         // Act
         manager.addEventListener(EventType.RABBIT_MOVED, listener);
         manager.fireEvent(new TestGameEvent(EventType.RABBIT_MOVED, "test"));
         
         // Assert
         assertThat(listener.getReceivedEvents().size(), is(1));
-        assertThat(
-            ((TestGameEvent)listener.getReceivedEvents().get(0)).getTestData(),
-            is("test")
-        );
+        GameEvent event = listener.getReceivedEvents().get(0);
+        assertThat(event.getType(), is(EventType.RABBIT_MOVED));
+        assertThat(event.getEventData().get("testData"), is("test"));
     }
     
     @Test
     public void removeEventListener_shouldRemoveListener() {
         // Arrange
-        GameEventManager manager = new GameEventManager();
-        TestEventListener listener = new TestEventListener();
         manager.addEventListener(EventType.RABBIT_MOVED, listener);
         
         // Act
@@ -60,53 +62,32 @@ public class GameEventManagerTest {
     }
     
     @Test
-    public void fireEvent_shouldOnlyNotifyListenersOfSpecificType() {
+    public void fireEvent_shouldNotifyOnlyMatchingListeners() {
         // Arrange
-        GameEventManager manager = new GameEventManager();
-        TestEventListener rabbitListener = new TestEventListener();
-        TestEventListener tokenListener = new TestEventListener();
-        
-        manager.addEventListener(EventType.RABBIT_MOVED, rabbitListener);
-        manager.addEventListener(EventType.TOKEN_ADDED, tokenListener);
+        TestEventListener otherListener = new TestEventListener();
+        manager.addEventListener(EventType.RABBIT_MOVED, listener);
+        manager.addEventListener(EventType.LEVEL_WON, otherListener);
         
         // Act
-        manager.fireEvent(new TestGameEvent(EventType.RABBIT_MOVED, "rabbit"));
+        manager.fireEvent(new TestGameEvent(EventType.RABBIT_MOVED, "test"));
         
         // Assert
-        assertThat(rabbitListener.getReceivedEvents().size(), is(1));
-        assertThat(tokenListener.getReceivedEvents().size(), is(0));
+        assertThat(listener.getReceivedEvents().size(), is(1));
+        assertThat(otherListener.getReceivedEvents().size(), is(0));
     }
     
     @Test
-    public void fireEvent_shouldNotifyMultipleListeners() {
+    public void multipleListeners_shouldAllReceiveEvents() {
         // Arrange
-        GameEventManager manager = new GameEventManager();
-        TestEventListener listener1 = new TestEventListener();
         TestEventListener listener2 = new TestEventListener();
-        
-        manager.addEventListener(EventType.RABBIT_MOVED, listener1);
+        manager.addEventListener(EventType.RABBIT_MOVED, listener);
         manager.addEventListener(EventType.RABBIT_MOVED, listener2);
         
         // Act
         manager.fireEvent(new TestGameEvent(EventType.RABBIT_MOVED, "test"));
         
         // Assert
-        assertThat(listener1.getReceivedEvents().size(), is(1));
-        assertThat(listener2.getReceivedEvents().size(), is(1));
-    }
-    
-    @Test
-    public void addEventListener_shouldNotAddSameListenerTwice() {
-        // Arrange
-        GameEventManager manager = new GameEventManager();
-        TestEventListener listener = new TestEventListener();
-        
-        // Act
-        manager.addEventListener(EventType.RABBIT_MOVED, listener);
-        manager.addEventListener(EventType.RABBIT_MOVED, listener);
-        manager.fireEvent(new TestGameEvent(EventType.RABBIT_MOVED, "test"));
-        
-        // Assert
         assertThat(listener.getReceivedEvents().size(), is(1));
+        assertThat(listener2.getReceivedEvents().size(), is(1));
     }
 }

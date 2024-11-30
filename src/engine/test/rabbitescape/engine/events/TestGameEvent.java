@@ -7,8 +7,12 @@ import java.util.Map;
  * A simple GameEvent implementation for testing purposes.
  */
 public class TestGameEvent implements GameEvent {
-    private final EventType type;
-    private final String testData;
+    private EventType type;
+    private String testData;
+
+    public TestGameEvent() {
+        this(EventType.RABBIT_MOVED, "default");
+    }
 
     public TestGameEvent(EventType type, String testData) {
         this.type = type;
@@ -32,5 +36,13 @@ public class TestGameEvent implements GameEvent {
 
     public String getTestData() {
         return testData;
+    }
+
+    public void setType(EventType type) {
+        this.type = type;
+    }
+
+    public void setTestData(String testData) {
+        this.testData = testData;
     }
 }

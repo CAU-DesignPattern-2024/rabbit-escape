@@ -10,7 +10,7 @@ import java.util.Map;
 import rabbitescape.engine.ChangeDescription.State;
 import rabbitescape.engine.behaviours.*;
 
-public class Rabbit extends Thing implements Comparable<Rabbit>
+public class Rabbit extends Thing implements Comparable<Rabbit>, Cloneable
 {
     public static enum Type
     {
@@ -18,7 +18,7 @@ public class Rabbit extends Thing implements Comparable<Rabbit>
         RABBOT
     }
 
-    public final static int NOT_INDEXED = 0;
+	public final static int NOT_INDEXED = 0;
     private final List<Behaviour> behaviours;
     private final List<Behaviour> behavioursTriggerOrder;
 
@@ -271,4 +271,10 @@ public class Rabbit extends Thing implements Comparable<Rabbit>
     {
         return ( type == Type.RABBIT ? 4 : 5 );
     }
+    
+    @Override
+	protected Object clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return super.clone();
+	}
 }

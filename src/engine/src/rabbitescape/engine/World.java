@@ -11,6 +11,7 @@ import java.util.Map;
 import rabbitescape.engine.Rabbit.Type;
 import rabbitescape.engine.WaterRegion;
 import rabbitescape.engine.err.RabbitEscapeException;
+import rabbitescape.engine.events.*;
 import rabbitescape.engine.textworld.Comment;
 import rabbitescape.engine.util.Dimension;
 import rabbitescape.engine.util.LookupTable2D;
@@ -132,6 +133,9 @@ public class World
     public final String music;
     public final VoidMarkerStyle.Style voidStyle;
 
+    private final GameEventManager eventManager;
+    private LevelWinListener levelWinListener;
+
     public World(
         Dimension size,
         List<Block> blocks,
@@ -194,7 +198,9 @@ public class World
                 waterAmounts );
         }
 
-        this.changes = new WorldChanges( this, statsListener );
+        this.eventManager = new GameEventManager();
+        this.changes = new WorldChanges( this, new WorldStatsListenerAdapter(statsListener, eventManager) );
+        this.levelWinListener = null;
 
         init();
     }
@@ -205,7 +211,7 @@ public class World
         List<Rabbit> rabbits,
         List<Thing> things,
         LookupTable2D<WaterRegion> waterTable,
-        Map<rabbitescape.engine.Token.Type, Integer> abilities,
+        Map<Token.Type, Integer> abilities,
         String name,
         String description,
         String author_name,
@@ -222,8 +228,9 @@ public class World
         int rabbit_index_count,
         boolean paused,
         Comment[] comments,
-        IgnoreWorldStatsListener statsListener,
-        VoidMarkerStyle.Style voidStyle )
+        WorldStatsListener statsListener,
+        VoidMarkerStyle.Style voidStyle
+    )
     {
         this.size = size;
         this.blockTable = blockTable;
@@ -249,7 +256,9 @@ public class World
         this.comments = comments;
         this.voidStyle = voidStyle;
 
-        this.changes = new WorldChanges( this, statsListener );
+        this.eventManager = new GameEventManager();
+        this.changes = new WorldChanges(this, new WorldStatsListenerAdapter(statsListener, eventManager));
+        this.levelWinListener = null;
 
         init();
     }
@@ -497,5 +506,37 @@ public class World
             }
         }
         return waterAmounts;
+    }
+
+    public void addEventListener(EventType type, GameEventListener listener) {
+        eventManager.addEventListener(type, listener);
+    }
+
+    public void removeEventListener(EventType type, GameEventListener listener) {
+        eventManager.removeEventListener(type, listener);
+    }
+
+    public GameEventManager getEventManager() {
+        return eventManager;
+    }
+
+    public void setLevelWinListener(LevelWinListener listener) {
+        if (listener != null) {
+            this.levelWinListener = new LevelWinListenerAdapter(listener, eventManager);
+        } else {
+            this.levelWinListener = null;
+        }
+    }
+
+    public void won() {
+        if (levelWinListener != null) {
+            levelWinListener.won();
+        }
+    }
+
+    public void lost() {
+        if (levelWinListener != null) {
+            levelWinListener.lost();
+        }
     }
 }

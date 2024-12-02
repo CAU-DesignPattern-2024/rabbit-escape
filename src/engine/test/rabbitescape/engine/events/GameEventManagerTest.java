@@ -3,6 +3,7 @@ package rabbitescape.engine.events;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import rabbitescape.engine.mock.events.MockGameEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class GameEventManagerTest {
     public void addEventListener_shouldAddListener() {
         // Act
         manager.addEventListener(EventType.RABBIT_MOVED, listener);
-        TestGameEvent event = new TestGameEvent();
+        MockGameEvent event = new MockGameEvent();
         event.setTestData("test");
         manager.fireEvent(event);
         
@@ -56,7 +57,7 @@ public class GameEventManagerTest {
         
         // Act
         manager.removeEventListener(EventType.RABBIT_MOVED, listener);
-        TestGameEvent event = new TestGameEvent();
+        MockGameEvent event = new MockGameEvent();
         event.setTestData("test");
         manager.fireEvent(event);
         
@@ -72,7 +73,7 @@ public class GameEventManagerTest {
         manager.addEventListener(EventType.LEVEL_WON, otherListener);
         
         // Act
-        TestGameEvent event = new TestGameEvent();
+        MockGameEvent event = new MockGameEvent();
         event.setTestData("test");
         manager.fireEvent(event);
         
@@ -89,7 +90,7 @@ public class GameEventManagerTest {
         manager.addEventListener(EventType.RABBIT_MOVED, listener2);
         
         // Act
-        TestGameEvent event = new TestGameEvent();
+        MockGameEvent event = new MockGameEvent();
         event.setTestData("test");
         manager.fireEvent(event);
         

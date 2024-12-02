@@ -277,4 +277,13 @@ public class Rabbit extends Thing implements Comparable<Rabbit>, Cloneable
 		// TODO Auto-generated method stub
 		return super.clone();
 	}
+    
+    public List<Behaviour> getBehaviours(){
+    	return this.behaviours;
+    }
+    
+    public List<Behaviour> getBehavioursTriggerOrder(){
+    	return this.behavioursTriggerOrder;
+    }
+    
 }

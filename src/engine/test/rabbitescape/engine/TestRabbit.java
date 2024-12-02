@@ -4,6 +4,8 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 import static rabbitescape.engine.ChangeDescription.State.*;
 
+import java.util.List;
+
 import org.junit.Test;
 
 public class TestRabbit
@@ -61,6 +63,60 @@ public class TestRabbit
         System.out.println("Time taken to create " + TEST_COUNT + " Rabbit objects: " 
                            + elapsedTime / 1_000_000.0 + " ms");
         
+    }
+    
+    @Test
+    public void Cloned_rabbit_has_same_behaviourOrder_as_original() throws CloneNotSupportedException {
+    	
+    	Rabbit original, cloned;
+    	boolean hasSameOrder;
+    	List<Behaviour> originalBehaviours, clonedBehaviours, originalBTO, clonedBTO;
+    	
+    	original = new Rabbit(0, 0, Direction.LEFT, Rabbit.Type.RABBIT);
+    	originalBehaviours = original.getBehaviours();
+    	originalBTO = original.getBehavioursTriggerOrder();
+    	
+    	cloned = (Rabbit) original.clone();
+    	clonedBehaviours = cloned.getBehaviours();
+    	clonedBTO = cloned.getBehavioursTriggerOrder();
+    	hasSameOrder = true;
+    	
+    	assertThat(originalBehaviours.size(), equalTo(clonedBehaviours.size()));
+    	
+    	for(int i=0; i<originalBehaviours.size(); i++) {
+    		if(originalBehaviours.get(i).getClass()!=clonedBehaviours.get(i).getClass()) hasSameOrder = false;
+    		if(originalBTO.get(i).getClass()!=clonedBTO.get(i).getClass()) hasSameOrder = false;
+    	}
+    	
+    	assertThat(hasSameOrder, equalTo(true));
+    	
+    }
+    
+    @Test
+    public void Cloned_rabbit_has_different_behaviour_objects() throws CloneNotSupportedException {
+    	
+      	Rabbit original, cloned;
+    	boolean hasDifferentBehaviour;
+    	List<Behaviour> originalBehaviours, clonedBehaviours, originalBTO, clonedBTO;
+    	
+    	original = new Rabbit(0, 0, Direction.LEFT, Rabbit.Type.RABBIT);
+    	originalBehaviours = original.getBehaviours();
+    	originalBTO = original.getBehavioursTriggerOrder();
+    	
+    	cloned = (Rabbit) original.clone();
+    	clonedBehaviours = cloned.getBehaviours();
+    	clonedBTO = cloned.getBehavioursTriggerOrder();
+    	hasDifferentBehaviour = true;
+    	
+    	assertThat(originalBehaviours.size(), equalTo(clonedBehaviours.size()));
+    	
+    	for(int i=0; i<originalBehaviours.size(); i++) {
+    		if(originalBehaviours.get(i)==clonedBehaviours.get(i)) hasDifferentBehaviour = false;
+    		if(originalBTO.get(i)==clonedBTO.get(i)) hasDifferentBehaviour = false;
+    	}
+    	
+    	assertThat(hasDifferentBehaviour, equalTo(true));
+    	
     }
  
 }

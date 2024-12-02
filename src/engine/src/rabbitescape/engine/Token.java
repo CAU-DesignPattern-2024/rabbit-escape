@@ -230,4 +230,9 @@ public class Token extends Thing
     {
         return type.toString();
     }
+
+	@Override
+	public void accept(ThingVisitor visitor) {
+		visitor.visit(this);
+	}
 }

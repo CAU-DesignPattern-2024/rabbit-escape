@@ -50,4 +50,9 @@ public class Pipe extends Thing
     {
         return "Pipe";
     }
+
+	@Override
+	public void accept(ThingVisitor visitor) {
+		visitor.visit(this);
+	}
 }

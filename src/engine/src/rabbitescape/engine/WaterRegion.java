@@ -287,4 +287,9 @@ public class WaterRegion extends Thing implements LookupItem2D
     {
         return 0 == contents ? "" : "~" + contents;
     }
+
+	@Override
+	public void accept(ThingVisitor visitor) {
+		visitor.visit(this);
+	}
 }

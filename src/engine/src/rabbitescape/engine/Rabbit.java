@@ -271,4 +271,10 @@ public class Rabbit extends Thing implements Comparable<Rabbit>
     {
         return ( type == Type.RABBIT ? 4 : 5 );
     }
+    
+    @Override
+    public void accept(ThingVisitor visitor) {
+        visitor.visit(this);
+    }
+    
 }

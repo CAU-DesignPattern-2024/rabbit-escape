@@ -41,4 +41,9 @@ public class Exit extends Thing
     {
         return world == null ? "Exit" : "Exit\n" + world.num_saved + " saved";
     }
+
+	@Override
+	public void accept(ThingVisitor visitor) {
+		visitor.visit(this);
+	}
 }

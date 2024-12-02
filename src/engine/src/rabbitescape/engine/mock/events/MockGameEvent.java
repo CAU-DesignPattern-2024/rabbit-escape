@@ -1,4 +1,7 @@
-package rabbitescape.engine.events;
+package rabbitescape.engine.mock.events;
+
+import rabbitescape.engine.events.EventType;
+import rabbitescape.engine.events.GameEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,11 +9,11 @@ import java.util.Map;
 /**
  * A simple GameEvent implementation for testing purposes.
  */
-public class TestGameEvent implements GameEvent {
+public class MockGameEvent implements GameEvent {
     private EventType type;
     private String testData;
 
-    public TestGameEvent() {
+    public MockGameEvent() {
         this.type = EventType.RABBIT_MOVED;
         this.testData = "default";
     }

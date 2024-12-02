@@ -60,7 +60,7 @@ public class TestRabbit
 
         // 결과 출력
         elapsedTime = endTime - startTime;
-        System.out.println("Time taken to create " + TEST_COUNT + " Rabbit objects: " 
+        System.out.println("Time taken to create " + TEST_COUNT + " cloned Rabbit objects: " 
                            + elapsedTime / 1_000_000.0 + " ms");
         
     }

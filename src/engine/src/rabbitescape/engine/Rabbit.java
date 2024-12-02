@@ -19,8 +19,8 @@ public class Rabbit extends Thing implements Comparable<Rabbit>, Cloneable
     }
 
 	public final static int NOT_INDEXED = 0;
-    private final List<Behaviour> behaviours;
-    private final List<Behaviour> behavioursTriggerOrder;
+    private List<Behaviour> behaviours;
+    private List<Behaviour> behavioursTriggerOrder;
 
     public int index;
 
@@ -274,8 +274,29 @@ public class Rabbit extends Thing implements Comparable<Rabbit>, Cloneable
     
     @Override
 	protected Object clone() throws CloneNotSupportedException {
-		// TODO Auto-generated method stub
-		return super.clone();
+        Rabbit clonedRabbit = (Rabbit) super.clone();
+        Map<Behaviour, Behaviour> behaviourCloneMap = new HashMap<>();
+        Falling clonedFalling = null;
+        
+        clonedRabbit.behaviours = new ArrayList<>();
+        for (Behaviour behaviour : this.behaviours) {
+            Behaviour clonedBehaviour = (Behaviour) behaviour.clone();
+            
+            if (behaviour == this.falling) {
+                clonedFalling = (Falling) clonedBehaviour;
+                clonedRabbit.falling = clonedFalling;
+            }
+            
+            clonedRabbit.behaviours.add(clonedBehaviour);
+            behaviourCloneMap.put(behaviour, clonedBehaviour);
+        }
+
+        clonedRabbit.behavioursTriggerOrder = new ArrayList<>();
+        for (Behaviour behaviour : this.behavioursTriggerOrder) {
+            clonedRabbit.behavioursTriggerOrder.add(behaviourCloneMap.get(behaviour));
+        }
+
+		return clonedRabbit;
 	}
     
     public List<Behaviour> getBehaviours(){

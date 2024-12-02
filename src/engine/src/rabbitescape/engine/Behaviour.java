@@ -4,7 +4,7 @@ import java.util.Map;
 
 import rabbitescape.engine.ChangeDescription.State;
 
-public abstract class Behaviour
+public abstract class Behaviour implements Cloneable
 {
     public boolean triggered;
 
@@ -41,4 +41,10 @@ public abstract class Behaviour
     public void restoreFromState( Map<String, String> saveState )
     {
     }
+
+	@Override
+	protected Behaviour clone() throws CloneNotSupportedException {
+		return (Behaviour) super.clone();
+	}
+    
 }

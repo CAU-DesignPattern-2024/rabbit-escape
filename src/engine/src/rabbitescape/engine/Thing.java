@@ -30,4 +30,7 @@ public abstract class Thing implements ShownOnOverlay
 
     @Override
     public abstract String overlayText();
+    
+    public abstract void accept(ThingVisitor visitor);
+    
 }

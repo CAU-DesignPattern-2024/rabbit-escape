@@ -117,6 +117,7 @@ public class BehaviourTools
             if ( token != null && token.type == type )
             {
                 world.changes.removeToken( token );
+                rabbit.accept(ThingLogVisitor.getInstance());
                 return true;
             }
         }

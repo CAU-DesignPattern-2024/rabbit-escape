@@ -92,4 +92,9 @@ public class Entrance extends Thing
                        ? "Entrance"
                        : "Entrance\n" + world.num_waiting + " to come";
     }
+
+	@Override
+	public void accept(ThingVisitor visitor) {
+		visitor.visit(this);
+	}
 }

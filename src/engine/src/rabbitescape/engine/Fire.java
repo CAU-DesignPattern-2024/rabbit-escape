@@ -189,4 +189,9 @@ public class Fire extends Thing
     {
         return "Fire";
     }
+
+	@Override
+	public void accept(ThingVisitor visitor) {
+		visitor.visit(this);
+	}
 }

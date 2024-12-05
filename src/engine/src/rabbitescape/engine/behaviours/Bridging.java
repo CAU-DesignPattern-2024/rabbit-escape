@@ -6,13 +6,15 @@ import static rabbitescape.engine.Block.Material.*;
 import static rabbitescape.engine.Block.Shape.*;
 
 import java.util.Map;
+import java.util.HashMap;
 
 import rabbitescape.engine.*;
 import rabbitescape.engine.ChangeDescription.State;
+import rabbitescape.engine.behaviours.bridge.*;
 
 public class Bridging extends Behaviour
 {
-    enum BridgeType
+    public enum BridgeType
     {
         ALONG,
         UP,
@@ -22,6 +24,12 @@ public class Bridging extends Behaviour
     private int smallSteps = 0;
     private int bigSteps = 0;
     private BridgeType bridgeType = BridgeType.ALONG;
+
+    private static Map<State, BridgingStrategy> strategies = new HashMap<>();
+
+    static {
+        initBridgeStrategies();
+    }
 
     @Override
     public void cancel()
@@ -402,173 +410,85 @@ public class Bridging extends Behaviour
         return handled;
     }
 
-    private boolean moveRabbit( World world, Rabbit rabbit, State state )
-    {
-        switch ( state )
-        {
-            case RABBIT_BRIDGING_RIGHT_1:
-            case RABBIT_BRIDGING_RIGHT_2:
-            case RABBIT_BRIDGING_LEFT_1:
-            case RABBIT_BRIDGING_LEFT_2:
-            {
-                bridgeType = BridgeType.ALONG;
-                return true;
+    private boolean moveRabbit(World world, Rabbit rabbit, State state) {
+        BridgingStrategy strategy = strategies.get(state);
+        if (strategy != null) {
+            boolean handled = strategy.execute(world, rabbit);
+            if (handled) {
+                bridgeType = strategy.getBridgeType();
             }
-            case RABBIT_BRIDGING_UP_RIGHT_1:
-            case RABBIT_BRIDGING_UP_RIGHT_2:
-            case RABBIT_BRIDGING_UP_LEFT_1:
-            case RABBIT_BRIDGING_UP_LEFT_2:
-            {
-                bridgeType = BridgeType.UP;
-                return true;
-            }
-            case RABBIT_BRIDGING_DOWN_UP_RIGHT_1:
-            case RABBIT_BRIDGING_DOWN_UP_RIGHT_2:
-            case RABBIT_BRIDGING_DOWN_UP_LEFT_1:
-            case RABBIT_BRIDGING_DOWN_UP_LEFT_2:
-            {
-                bridgeType = BridgeType.DOWN_UP;
-                return true;
-            }
-            case RABBIT_BRIDGING_IN_CORNER_RIGHT_1:
-            case RABBIT_BRIDGING_IN_CORNER_LEFT_1:
-            case RABBIT_BRIDGING_IN_CORNER_RIGHT_2:
-            case RABBIT_BRIDGING_IN_CORNER_LEFT_2:
-            case RABBIT_BRIDGING_IN_CORNER_UP_RIGHT_1:
-            case RABBIT_BRIDGING_IN_CORNER_UP_LEFT_1:
-            case RABBIT_BRIDGING_IN_CORNER_UP_RIGHT_2:
-            case RABBIT_BRIDGING_IN_CORNER_UP_LEFT_2:
-            {
-                bridgeType = BridgeType.ALONG;
-                return true;
-            }
-            case RABBIT_BRIDGING_RIGHT_3:
-            case RABBIT_BRIDGING_DOWN_UP_RIGHT_3:
-            {
-                rabbit.x++;
-                world.changes.addBlock(
-                    new Block(
-                        rabbit.x,
-                        rabbit.y,
-                        EARTH,
-                        BRIDGE_UP_RIGHT,
-                        0
-                    )
-                );
-
-                return true;
-            }
-            case RABBIT_BRIDGING_LEFT_3:
-            case RABBIT_BRIDGING_DOWN_UP_LEFT_3:
-            {
-                rabbit.x--;
-                world.changes.addBlock(
-                    new Block(
-                        rabbit.x,
-                        rabbit.y,
-                        EARTH,
-                        BRIDGE_UP_LEFT,
-                        0
-                    )
-                );
-
-                return true;
-            }
-            case RABBIT_BRIDGING_UP_RIGHT_3:
-            {
-                rabbit.x++;
-                rabbit.y--;
-                world.changes.addBlock(
-                    new Block(
-                        rabbit.x,
-                        rabbit.y,
-                        EARTH,
-                        BRIDGE_UP_RIGHT,
-                        0
-                    )
-                );
-
-                return true;
-            }
-            case RABBIT_BRIDGING_UP_LEFT_3:
-            {
-                rabbit.x--;
-                rabbit.y--;
-                world.changes.addBlock(
-                    new Block(
-                        rabbit.x,
-                        rabbit.y,
-                        EARTH,
-                        BRIDGE_UP_LEFT,
-                        0
-                    )
-                );
-
-                return true;
-            }
-            case RABBIT_BRIDGING_IN_CORNER_RIGHT_3:
-            {
-                rabbit.onSlope = true;
-                world.changes.addBlock(
-                    new Block(
-                        rabbit.x,
-                        rabbit.y,
-                        EARTH,
-                        BRIDGE_UP_RIGHT,
-                        0
-                    )
-                );
-                return true;
-            }
-            case RABBIT_BRIDGING_IN_CORNER_LEFT_3:
-            {
-                rabbit.onSlope = true;
-                world.changes.addBlock(
-                    new Block(
-                        rabbit.x,
-                        rabbit.y,
-                        EARTH,
-                        BRIDGE_UP_LEFT,
-                        0
-                    )
-                );
-                return true;
-            }
-            case RABBIT_BRIDGING_IN_CORNER_UP_RIGHT_3:
-            {
-                rabbit.onSlope = true;
-                rabbit.y--;
-                world.changes.addBlock(
-                    new Block(
-                        rabbit.x,
-                        rabbit.y,
-                        EARTH,
-                        BRIDGE_UP_RIGHT,
-                        0
-                    )
-                );
-                return true;
-            }
-            case RABBIT_BRIDGING_IN_CORNER_UP_LEFT_3:
-            {
-                rabbit.onSlope = true;
-                rabbit.y--;
-                world.changes.addBlock(
-                    new Block(
-                        rabbit.x,
-                        rabbit.y,
-                        EARTH,
-                        BRIDGE_UP_LEFT,
-                        0
-                    )
-                );
-                return true;
-            }
-            default:
-            {
-                return false;
-            }
+            return handled;
         }
+        return false;
+    }
+
+    // Initialize bridge strategies
+    private static void initBridgeStrategies() {
+        // InitialAlongBridgingStrategy
+        BridgingStrategy initialAlongBridgingStrategy = new InitialAlongBridgingStrategy();
+        strategies.put(RABBIT_BRIDGING_RIGHT_1, initialAlongBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_RIGHT_2, initialAlongBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_LEFT_1, initialAlongBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_LEFT_2, initialAlongBridgingStrategy);
+
+        // InitialUpBridgingStrategy
+        BridgingStrategy initialUpBridgingStrategy = new InitialUpBridgingStrategy();
+        strategies.put(RABBIT_BRIDGING_UP_RIGHT_1, initialUpBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_UP_RIGHT_2, initialUpBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_UP_LEFT_1, initialUpBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_UP_LEFT_2, initialUpBridgingStrategy);
+
+        // InitialDownUpBridgingStrategy
+        BridgingStrategy initialDownUpBridgingStrategy = new InitialDownUpBridgingStrategy();
+        strategies.put(RABBIT_BRIDGING_DOWN_UP_RIGHT_1, initialDownUpBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_DOWN_UP_RIGHT_2, initialDownUpBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_DOWN_UP_LEFT_1, initialDownUpBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_DOWN_UP_LEFT_2, initialDownUpBridgingStrategy);
+
+        // InitialInCornerBridgingStrategy
+        BridgingStrategy initialInCornerBridgingStrategy = new InitialInCornerBridgingStrategy();
+        strategies.put(RABBIT_BRIDGING_IN_CORNER_RIGHT_1, initialInCornerBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_IN_CORNER_LEFT_1, initialInCornerBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_IN_CORNER_RIGHT_2, initialInCornerBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_IN_CORNER_LEFT_2, initialInCornerBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_IN_CORNER_UP_RIGHT_1, initialInCornerBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_IN_CORNER_UP_LEFT_1, initialInCornerBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_IN_CORNER_UP_RIGHT_2, initialInCornerBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_IN_CORNER_UP_LEFT_2, initialInCornerBridgingStrategy);
+
+        // RightBridgingStrategy
+        BridgingStrategy rightBridgingStrategy = new RightBridgingStrategy();
+        strategies.put(RABBIT_BRIDGING_RIGHT_3, rightBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_DOWN_UP_RIGHT_3, rightBridgingStrategy);
+
+        // LeftBridgingStrategy
+        BridgingStrategy leftBridgingStrategy = new LeftBridgingStrategy();
+        strategies.put(RABBIT_BRIDGING_LEFT_3, leftBridgingStrategy);
+        strategies.put(RABBIT_BRIDGING_DOWN_UP_LEFT_3, leftBridgingStrategy);
+
+        // UpRightBridgingStrategy
+        BridgingStrategy upRightBridgingStrategy = new UpRightBridgingStrategy();
+        strategies.put(RABBIT_BRIDGING_UP_RIGHT_3, upRightBridgingStrategy);
+
+        // UpLeftBridgingStrategy
+        BridgingStrategy upLeftBridgingStrategy = new UpLeftBridgingStrategy();
+        strategies.put(RABBIT_BRIDGING_UP_LEFT_3, upLeftBridgingStrategy);
+
+        // InCornerRightBridgingStrategy
+        BridgingStrategy inCornerRightBridgingStrategy = new InCornerRightBridgingStrategy();
+        strategies.put(RABBIT_BRIDGING_IN_CORNER_RIGHT_3, inCornerRightBridgingStrategy);
+
+        // InCornerLeftBridgingStrategy
+        BridgingStrategy inCornerLeftBridgingStrategy = new InCornerLeftBridgingStrategy();
+        strategies.put(RABBIT_BRIDGING_IN_CORNER_LEFT_3, inCornerLeftBridgingStrategy);
+    
+        // InCornerUpRightBridgingStrategy
+        BridgingStrategy inCornerUpRightBridgingStrategy = new InCornerUpRightBridgingStrategy();
+        strategies.put(RABBIT_BRIDGING_IN_CORNER_UP_RIGHT_3, inCornerUpRightBridgingStrategy);
+
+        // InCornerUpLeftBridgingStrategy
+        BridgingStrategy inCornerUpLeftBridgingStrategy = new InCornerUpLeftBridgingStrategy();
+        strategies.put(RABBIT_BRIDGING_IN_CORNER_UP_LEFT_3, inCornerUpLeftBridgingStrategy);
     }
 
     @Override

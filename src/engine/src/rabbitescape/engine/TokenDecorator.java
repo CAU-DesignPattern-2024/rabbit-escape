@@ -1,5 +1,10 @@
 package rabbitescape.engine;
 
+import rabbitescape.engine.ChangeDescription.State;
+import rabbitescape.engine.Token.Type;
+import rabbitescape.engine.TokenComponent;
+import rabbitescape.engine.World;
+
 /**
  * TokenDecorator는 모든 데코레이터의 기본 클래스입니다.
  */

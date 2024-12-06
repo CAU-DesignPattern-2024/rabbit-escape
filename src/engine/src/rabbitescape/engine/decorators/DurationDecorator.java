@@ -1,6 +1,8 @@
 package rabbitescape.engine.decorators;
 
 import rabbitescape.engine.*;
+import rabbitescape.engine.ChangeDescription.State;
+import rabbitescape.engine.Token.Type;
 
 public class DurationDecorator extends TokenDecorator {
     private int duration;

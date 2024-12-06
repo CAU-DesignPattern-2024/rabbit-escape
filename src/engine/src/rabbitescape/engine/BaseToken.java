@@ -1,14 +1,16 @@
 package rabbitescape.engine;
 
 import static rabbitescape.engine.ChangeDescription.State.*;
+import rabbitescape.engine.ChangeDescription.State;
+import rabbitescape.engine.Token.Type;
 
 public class BaseToken implements TokenComponent {
     protected int x;
     protected int y;
-    protected Type type;
+    protected Token.Type type;
     protected State state;
 
-    public BaseToken(int x, int y, Type type) {
+    public BaseToken(int x, int y, Token.Type type) {
         this.x = x;
         this.y = y;
         this.type = type;
@@ -26,7 +28,7 @@ public class BaseToken implements TokenComponent {
     }
 
     @Override
-    public Type getType() {
+    public Token.Type getType() {
         return type;
     }
 
@@ -50,7 +52,7 @@ public class BaseToken implements TokenComponent {
         this.y = y;
     }
 
-    protected State switchType(Type type, boolean moving, boolean falling, boolean onSlope) {
+    protected State switchType(Token.Type type, boolean moving, boolean falling, boolean onSlope) {
         switch (type) {
             case bash:
                 return moving ? TOKEN_BASH_FALLING : (falling ? TOKEN_BASH_FALLING : (onSlope ? TOKEN_BASH_ON_SLOPE : TOKEN_BASH));

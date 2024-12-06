@@ -4,7 +4,7 @@ import rabbitescape.engine.World;
 import rabbitescape.engine.behaviours.Bridging.BridgeType;
 import rabbitescape.engine.Rabbit;
 
-public class InitialDownUpBridgingStrategy extends BaseBridgingStrategy {
+public class InitialDownUpBridgingStrategy extends BaseBridgingStrategy implements BridgeTypeProvider {
     @Override
     public boolean execute(World world, Rabbit rabbit) {
         return true;

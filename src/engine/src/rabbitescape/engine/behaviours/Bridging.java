@@ -414,8 +414,9 @@ public class Bridging extends Behaviour
         BridgingStrategy strategy = strategies.get(state);
         if (strategy != null) {
             boolean handled = strategy.execute(world, rabbit);
-            if (handled) {
-                bridgeType = strategy.getBridgeType();
+            // 원본 코드과 동일한 구도로, BridgeTypeProvider 인터페이스를 구현한 경우에만 bridgeType을 설정
+            if (handled && strategy instanceof BridgeTypeProvider) {
+                bridgeType = ((BridgeTypeProvider) strategy).getBridgeType();
             }
             return handled;
         }

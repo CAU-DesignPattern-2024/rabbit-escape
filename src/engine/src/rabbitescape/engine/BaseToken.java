@@ -14,7 +14,16 @@ public class BaseToken implements TokenComponent {
         this.x = x;
         this.y = y;
         this.type = type;
-        this.state = switchType(type, false, false, true);
+        // 초기에는 토큰이 평지에 있다고 가정 (onSlope = false)
+        this.state = switchType(type, false, false, false);
+    }
+
+    public BaseToken(int x, int y, Type type, World world) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+        boolean onSlope = BehaviourTools.isSlope(world.getBlockAt(x, y));
+        this.state = switchType(type, false, false, onSlope);
     }
 
     @Override

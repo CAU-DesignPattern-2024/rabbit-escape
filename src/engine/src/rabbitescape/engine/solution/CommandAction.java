@@ -6,7 +6,7 @@ package rabbitescape.engine.solution;
  * "until:Lost" for an UntilAction
  * "bash" for a SelectAction
  */
-public interface CommandAction
+public interface CommandAction extends Component
 {
     void typeSwitch( CommandActionTypeSwitch actionTypeSwitch );
 }

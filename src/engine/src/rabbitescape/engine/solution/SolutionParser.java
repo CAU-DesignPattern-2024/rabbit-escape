@@ -63,7 +63,7 @@ public class SolutionParser
 
     public static String serialise( Solution solution )
     {
-        return join( ";", map( serialiseCommand(), solution.commands ) );
+        return join( ";", map( serialiseCommand(), (SolutionCommand[]) solution.commands) );
     }
 
     // ---

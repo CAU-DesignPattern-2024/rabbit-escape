@@ -28,11 +28,11 @@ public class SolutionCommand implements Component
      * a default WaitAction of 1 step will be created. The solution fragment
      * ";;" has implied ones, "1;1;".
      */
-    public SolutionCommand( CommandAction... actions )
+    public SolutionCommand( Component... actions )
     {
-        if ( 0 == actions.length )
+        if (actions.length == 0)
         {
-            this.actions = new CommandAction[] { new WaitAction( 1 ) };
+            this.actions = new Component[] { new WaitAction( 1 ) };
         }
         else
         {
@@ -45,7 +45,7 @@ public class SolutionCommand implements Component
     {
         if ( actions.length > 1 )
         {
-            for ( Component a: actions )
+            for ( Component a : actions )
             {
                 if ( a instanceof WaitAction )
                 {
@@ -78,33 +78,20 @@ public class SolutionCommand implements Component
     /**
      * Try to combine two commands. If this is not possible then return null.
      */
-    public static SolutionCommand tryToSimplify(
-        SolutionCommand existingCmd, 
-        SolutionCommand newCmd 
-    )
-    {
-        if( null == existingCmd || null == newCmd )
-        {
+    public static SolutionCommand tryToSimplify(SolutionCommand existingCmd, SolutionCommand newCmd) {
+        if (existingCmd == null || newCmd == null) {
             return null;
         }
 
-        CommandAction action1 = null, action2 = null;
+        if (existingCmd.actions.length == 1 && newCmd.actions.length == 1) {
+            Component action1 = existingCmd.actions[0];
+            Component action2 = newCmd.actions[0];
 
-        if ( existingCmd instanceof CommandAction && newCmd instanceof CommandAction) {
-            action1 = (CommandAction) existingCmd.actions[0];
-            action2 = (CommandAction) newCmd.actions[0];
-        }
-        
-
-        if (
-               action1 instanceof WaitAction
-            && action2 instanceof WaitAction
-        )
-        {
-            WaitAction wait1 = (WaitAction)action1;
-            WaitAction wait2 = (WaitAction)action2;
-            return new SolutionCommand(
-                new WaitAction( wait1.steps + wait2.steps ) );
+            if (action1 instanceof WaitAction && action2 instanceof WaitAction) {
+                WaitAction wait1 = (WaitAction) action1;
+                WaitAction wait2 = (WaitAction) action2;
+                return new SolutionCommand(new WaitAction(wait1.steps + wait2.steps));
+            }
         }
         return null;
     }

@@ -66,9 +66,9 @@ public class SolutionRecorder implements SolutionRecorderTemplate
         if (!commandInProgress.isEmpty()) {
             // Ensure all components are of type CommandAction
             CommandAction[] actions = commandInProgress.stream()
-                .filter(CommandAction.class::isInstance) // Filter only CommandAction
-                .map(CommandAction.class::cast)         // Cast to CommandAction
-                .toArray(CommandAction[]::new);         // Collect into an array
+                .filter(a -> a instanceof CommandAction) // Filter only CommandAction
+                .map(a -> (CommandAction) a)             // Cast to CommandAction
+                .toArray(CommandAction[]::new);          // Collect into an array
             
             if (actions.length != commandInProgress.size()) {
                 throw new IllegalArgumentException("commandInProgress contains non-CommandAction elements.");
@@ -78,6 +78,7 @@ public class SolutionRecorder implements SolutionRecorderTemplate
             commandInProgress.clear();
         }
     }
+
 
 
 

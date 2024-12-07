@@ -8,4 +8,5 @@ public interface ThingVisitor {
     void visit(Rabbit rabbit);
     void visit(Token token);
     void visit(WaterRegion waterRegion);
+    void visit(BaseToken token);
 }

@@ -65,5 +65,9 @@ public class ThingLogVisitor implements ThingVisitor {
 		
 	}
 
-
+	@Override
+	public void visit(BaseToken token) {
+		// TODO Auto-generated method stub
+		
+	}
 }

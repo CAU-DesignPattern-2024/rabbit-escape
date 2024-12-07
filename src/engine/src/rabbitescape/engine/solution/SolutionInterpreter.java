@@ -124,9 +124,11 @@ public class SolutionInterpreter
 
         final List<TimeStepAction> tsActions = new ArrayList<TimeStepAction>();
 
-        for ( CommandAction action : command.actions )
+        for ( Component action : command.actions )
         {
-            action.typeSwitch( new CommandActionTypeSwitch()
+            if (action instanceof CommandAction) {
+                CommandAction ca = (CommandAction) action;
+                ca.typeSwitch( new CommandActionTypeSwitch()
             {
                 @Override
                 public void caseWaitAction( WaitAction waitAction )
@@ -168,6 +170,7 @@ public class SolutionInterpreter
                 }
                 // Curse you, Java, for making me this way
             } );
+            }
         }
 
         if ( stepsToWait.value > 1 )

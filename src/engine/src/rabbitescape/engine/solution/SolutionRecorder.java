@@ -29,7 +29,7 @@ public class SolutionRecorder implements SolutionRecorderTemplate
                                   : null ;
         SolutionCommand combCmd =
             SolutionCommand.tryToSimplify( prevCmd, newCmd );
-        if( null == combCmd)
+        if(combCmd == null)
         {
             solutionInProgress.add( newCmd );
         }

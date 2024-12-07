@@ -123,7 +123,7 @@ public class SolutionParser
             @Override
             public String apply( SolutionCommand command )
             {
-                return join( "&", map( serialiseAction(), command.actions ) );
+                return join( "&", map( serialiseAction(), (CommandAction[]) command.actions ) );
             }
         };
     }

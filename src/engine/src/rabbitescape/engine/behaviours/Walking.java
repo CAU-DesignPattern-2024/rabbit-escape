@@ -6,6 +6,9 @@ import static rabbitescape.engine.Block.Shape.*;
 import rabbitescape.engine.*;
 import rabbitescape.engine.ChangeDescription.State;
 import rabbitescape.engine.behaviours.walk.DownSlopeHandler;
+import rabbitescape.engine.behaviours.walk.FlatGroundHandler;
+import rabbitescape.engine.behaviours.walk.StateHandler;
+import rabbitescape.engine.behaviours.walk.UpSlopeHandler;
 
 public class Walking extends Behaviour
 {

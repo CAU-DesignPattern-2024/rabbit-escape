@@ -4,7 +4,6 @@ import rabbitescape.engine.BehaviourTools;
 import rabbitescape.engine.Block;
 import rabbitescape.engine.ChangeDescription.State;
 import rabbitescape.engine.behaviours.Blocking;
-import rabbitescape.engine.behaviours.StateHandler;
 
 import static rabbitescape.engine.ChangeDescription.State.*;
 

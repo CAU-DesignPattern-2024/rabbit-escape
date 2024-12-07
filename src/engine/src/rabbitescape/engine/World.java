@@ -385,20 +385,11 @@ public class World
         }
     }
 
-    public Token getTokenAt( int x, int y )
-    {
-        // Note it is not worth using LookupTable2D for things.
-        // Handling their movement would complicate the code.
-        // There are not as many instances of Thing as Block.
-        // Iterating to check through is not too time
-        // consuming.
-        for ( Thing thing : things )
-        {
-            if ( thing.x == x && thing.y == y && thing instanceof Token )
-            {
-                if ( !changes.tokensToRemove.contains( thing ) )
-                {
-                    return (Token)thing;
+    public BaseToken getTokenAt(int x, int y) {
+        for (Thing thing : things) {
+            if (thing.x == x && thing.y == y && thing instanceof BaseToken) {
+                if (!changes.tokensToRemove.contains(thing)) {
+                    return (BaseToken) thing;
                 }
             }
         }

@@ -20,8 +20,8 @@ public class WorldChanges
     private final List<Rabbit> rabbitsToEnter = new ArrayList<Rabbit>();
     private final List<Rabbit> rabbitsToKill  = new ArrayList<Rabbit>();
     private final List<Rabbit> rabbitsToSave  = new ArrayList<Rabbit>();
-    private final List<Token>  tokensToAdd    = new ArrayList<Token>();
-    public  final List<Token>  tokensToRemove = new ArrayList<Token>();
+    private final List<BaseToken>  tokensToAdd    = new ArrayList<BaseToken>();
+    public  final List<BaseToken>  tokensToRemove = new ArrayList<BaseToken>();
     public  final List<Fire>   fireToRemove   = new ArrayList<Fire>();
     private final List<Block>  blocksToAdd    = new ArrayList<Block>();
     private final List<Block>  blocksToRemove = new ArrayList<Block>();
@@ -156,9 +156,9 @@ public class WorldChanges
 
     private synchronized void revertAddTokens()
     {
-        for ( Token t : tokensToAdd )
+        for ( BaseToken t : tokensToAdd )
         {
-            world.abilities.put( t.type, world.abilities.get( t.type ) + 1 );
+            world.abilities.put( t.getType(), world.abilities.get( t.getType() ) + 1 );
         }
         tokensToAdd.clear();
     }
@@ -189,11 +189,11 @@ public class WorldChanges
             return;
         }
 
-        tokensToAdd.add( new Token( x, y, type, world ) );
+        tokensToAdd.add( new BaseToken( x, y, type, world ) );
         world.abilities.put( type, numLeft - 1 );
     }
 
-    public synchronized void removeToken( Token thing )
+    public synchronized void removeToken( BaseToken thing )
     {
         tokensToRemove.add( thing );
     }

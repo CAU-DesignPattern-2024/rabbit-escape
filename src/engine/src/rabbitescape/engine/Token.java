@@ -177,35 +177,35 @@ public class Token extends Thing
     @Override
     public void step( World world )
     {
-        switch ( state )
-        {
-        case TOKEN_BASH_FALLING:
-        case TOKEN_BASH_FALL_TO_SLOPE:
-        case TOKEN_DIG_FALLING:
-        case TOKEN_DIG_FALL_TO_SLOPE:
-        case TOKEN_BRIDGE_FALLING:
-        case TOKEN_BRIDGE_FALL_TO_SLOPE:
-        case TOKEN_BLOCK_FALLING:
-        case TOKEN_BLOCK_FALL_TO_SLOPE:
-        case TOKEN_CLIMB_FALLING:
-        case TOKEN_CLIMB_FALL_TO_SLOPE:
-        case TOKEN_EXPLODE_FALL_TO_SLOPE:
-        case TOKEN_EXPLODE_FALLING:
-        case TOKEN_BROLLY_FALLING:
-        case TOKEN_BROLLY_FALL_TO_SLOPE:
-        {
-            ++y;
+        // switch ( state )
+        // {
+        // case TOKEN_BASH_FALLING:
+        // case TOKEN_BASH_FALL_TO_SLOPE:
+        // case TOKEN_DIG_FALLING:
+        // case TOKEN_DIG_FALL_TO_SLOPE:
+        // case TOKEN_BRIDGE_FALLING:
+        // case TOKEN_BRIDGE_FALL_TO_SLOPE:
+        // case TOKEN_BLOCK_FALLING:
+        // case TOKEN_BLOCK_FALL_TO_SLOPE:
+        // case TOKEN_CLIMB_FALLING:
+        // case TOKEN_CLIMB_FALL_TO_SLOPE:
+        // case TOKEN_EXPLODE_FALL_TO_SLOPE:
+        // case TOKEN_EXPLODE_FALLING:
+        // case TOKEN_BROLLY_FALLING:
+        // case TOKEN_BROLLY_FALL_TO_SLOPE:
+        // {
+        //     ++y;
 
-            if ( y >= world.size.height )
-            {
-                world.changes.removeToken( this );
-            }
+        //     if ( y >= world.size.height )
+        //     {
+        //         world.changes.removeToken( this );
+        //     }
 
-            return;
-        }
-        default:
-            // Nothing to do
-        }
+        //     return;
+        // }
+        // default:
+        //     // Nothing to do
+        // }
     }
 
     @Override

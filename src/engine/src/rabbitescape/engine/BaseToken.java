@@ -3,87 +3,22 @@ package rabbitescape.engine;
 import static rabbitescape.engine.ChangeDescription.State.*;
 import rabbitescape.engine.ChangeDescription.State;
 import rabbitescape.engine.Token.Type;
+import java.util.HashMap;
+import java.util.Map;
 
-public class BaseToken implements TokenComponent {
-    protected int x;
-    protected int y;
-    protected Type type;
-    protected State state;
+public class BaseToken extends Thing implements TokenComponent {
+    private Token.Type type;
+    private State state;
 
-    public BaseToken(int x, int y, Type type) {
-        this.x = x;
-        this.y = y;
+    public BaseToken(int x, int y, Token.Type type) {
+        super(x, y, switchType(type, false, false, true));
         this.type = type;
-        // 초기에는 토큰이 평지에 있다고 가정 (onSlope = false)
-        this.state = switchType(type, false, false, false);
     }
 
-    public BaseToken(int x, int y, Type type, World world) {
-        this.x = x;
-        this.y = y;
-        this.type = type;
+    public BaseToken(int x, int y, Token.Type type, World world) {
+        this(x, y, type);
         boolean onSlope = BehaviourTools.isSlope(world.getBlockAt(x, y));
         this.state = switchType(type, false, false, onSlope);
-    }
-
-    @Override
-    public void behave(World world, int x, int y) {
-        // 기본 동작 구현
-        Block onBlock = world.getBlockAt(x, y);
-        Block belowBlock = world.getBlockAt(x, y + 1);
-        boolean still = (
-            BehaviourTools.s_isFlat(belowBlock)
-            || (onBlock != null)
-            || BridgeTools.someoneIsBridgingAt(world, x, y)
-        );
-
-        state = switchType(type, !still,
-            BehaviourTools.isSlope(belowBlock),
-            BehaviourTools.isSlope(onBlock));
-    }
-
-    @Override
-    public void calcNewState(World world) {
-        Block currentBlock = world.getBlockAt(x, y);
-        boolean moving = !BehaviourTools.s_isFlat(world.getBlockAt(x, y + 1));
-        boolean slopeBelow = BehaviourTools.isSlope(world.getBlockAt(x, y + 1));
-        boolean onSlope = BehaviourTools.isSlope(currentBlock);
-        this.state = switchType(type, moving, slopeBelow, onSlope);
-    }
-
-    @Override
-    public String overlayText() {
-        return String.format("BaseToken: %s at (%d, %d) - State: %s", type, x, y, state);
-    }
-
-    @Override
-    public State getState() {
-        return state;
-    }
-
-    @Override
-    public Type getType() {
-        return type;
-    }
-
-    @Override
-    public int getX() {
-        return x;
-    }
-
-    @Override
-    public int getY() {
-        return y;
-    }
-
-    @Override
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    @Override
-    public void setY(int y) {
-        this.y = y;
     }
 
     private static State switchType(Type type, boolean moving, boolean slopeBelow, boolean onSlope) {
@@ -118,5 +53,85 @@ public class BaseToken implements TokenComponent {
             return fallingToSlope;
         }
         return falling;
+    }
+
+    @Override
+    public void behave(World world, int x, int y) {
+        // 기본 동작 구현
+        Block onBlock = world.getBlockAt(x, y);
+        Block belowBlock = world.getBlockAt(x, y + 1);
+        boolean still = (
+            BehaviourTools.s_isFlat(belowBlock)
+            || (onBlock != null)
+            || BridgeTools.someoneIsBridgingAt(world, x, y)
+        );
+
+        state = switchType(type, !still,
+            BehaviourTools.isSlope(belowBlock),
+            BehaviourTools.isSlope(onBlock));
+    }
+    
+    @Override
+    public void calcNewState(World world) {
+        Block currentBlock = world.getBlockAt(x, y);
+        boolean moving = !BehaviourTools.s_isFlat(world.getBlockAt(x, y + 1));
+        boolean slopeBelow = BehaviourTools.isSlope(world.getBlockAt(x, y + 1));
+        boolean onSlope = BehaviourTools.isSlope(currentBlock);
+        this.state = switchType(type, moving, slopeBelow, onSlope);
+    }
+
+    @Override
+    public String overlayText() {
+        return String.format("BaseToken: %s at (%d, %d) - State: %s", type, x, y, state);
+    }
+
+    @Override
+    public Token.Type getType() {
+        return type;
+    }
+
+    @Override
+    public State getState() {
+        return state;
+    }
+
+    @Override
+    public int getX() {
+        return x;
+    }
+
+    @Override
+    public int getY() {
+        return y;
+    }
+
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    @Override
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    @Override
+    public void step(World world) {
+        // Implement step logic if needed
+    }
+
+    @Override
+    public void restoreFromState(Map<String, String> state) {
+        // Implement restore logic if needed
+    }
+
+    @Override
+    public Map<String, String> saveState(boolean runtimeMeta) {
+        return new HashMap<>();
+    }
+
+    @Override
+    public void accept(ThingVisitor visitor) {
+        visitor.visit(this);
     }
 }

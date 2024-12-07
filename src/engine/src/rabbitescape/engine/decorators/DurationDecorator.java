@@ -3,12 +3,13 @@ package rabbitescape.engine.decorators;
 import rabbitescape.engine.*;
 import rabbitescape.engine.ChangeDescription.State;
 import rabbitescape.engine.Token.Type;
+import java.util.Map;
 
 public class DurationDecorator extends TokenDecorator {
     private int duration;
 
-    public DurationDecorator(TokenComponent token, int duration) {
-        super(token);
+    public DurationDecorator(TokenComponent token, int x, int y, State state, int duration) {
+        super(token, x, y, state);
         this.duration = duration;
     }
 
@@ -22,5 +23,39 @@ public class DurationDecorator extends TokenDecorator {
 
     public int getRemainingDuration() {
         return duration;
+    }
+
+    @Override
+    public String overlayText() {
+        return decoratedToken.overlayText();
+    }
+
+    @Override
+    public void step(World world) {
+        if (decoratedToken instanceof Thing) {
+            ((Thing) decoratedToken).step(world);
+        }
+    }
+
+    @Override
+    public void restoreFromState(Map<String, String> state) {
+        if (decoratedToken instanceof Thing) {
+            ((Thing) decoratedToken).restoreFromState(state);
+        }
+    }
+
+    @Override
+    public Map<String, String> saveState(boolean runtimeMeta) {
+        if (decoratedToken instanceof Thing) {
+            return ((Thing) decoratedToken).saveState(runtimeMeta);
+        }
+        return null;
+    }
+
+    @Override
+    public void accept(ThingVisitor visitor) {
+        if (decoratedToken instanceof Thing) {
+            ((Thing) decoratedToken).accept(visitor);
+        }
     }
 }

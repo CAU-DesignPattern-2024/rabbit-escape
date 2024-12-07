@@ -1,5 +1,7 @@
 package rabbitescape.engine.decorators;
 
+import java.util.Map;
+
 import rabbitescape.engine.*;
 import rabbitescape.engine.ChangeDescription.State;
 import rabbitescape.engine.Token.Type;
@@ -7,8 +9,8 @@ import rabbitescape.engine.Token.Type;
 public class EnhancedRangeDecorator extends TokenDecorator {
     private final int rangeBonus;
 
-    public EnhancedRangeDecorator(TokenComponent token, int rangeBonus) {
-        super(token);
+    public EnhancedRangeDecorator(TokenComponent token, int x, int y, State state, int rangeBonus) {
+        super(token, x, y, state);
         this.rangeBonus = rangeBonus;
     }
 
@@ -30,6 +32,40 @@ public class EnhancedRangeDecorator extends TokenDecorator {
             for (int i = 1; i <= rangeBonus; i++) {
                 // 추가 다리 생성 로직
             }
+        }
+    }
+
+    @Override
+    public String overlayText() {
+        return decoratedToken.overlayText();
+    }
+
+    @Override
+    public void step(World world) {
+        if (decoratedToken instanceof Thing) {
+            ((Thing) decoratedToken).step(world);
+        }
+    }
+
+    @Override
+    public void restoreFromState(Map<String, String> state) {
+        if (decoratedToken instanceof Thing) {
+            ((Thing) decoratedToken).restoreFromState(state);
+        }
+    }
+
+    @Override
+    public Map<String, String> saveState(boolean runtimeMeta) {
+        if (decoratedToken instanceof Thing) {
+            return ((Thing) decoratedToken).saveState(runtimeMeta);
+        }
+        return null;
+    }
+
+    @Override
+    public void accept(ThingVisitor visitor) {
+        if (decoratedToken instanceof Thing) {
+            ((Thing) decoratedToken).accept(visitor);
         }
     }
 }

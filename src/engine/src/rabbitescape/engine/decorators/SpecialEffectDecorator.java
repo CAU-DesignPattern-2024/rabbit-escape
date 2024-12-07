@@ -1,5 +1,7 @@
 package rabbitescape.engine.decorators;
 
+import java.util.Map;
+
 import rabbitescape.engine.*;
 import rabbitescape.engine.ChangeDescription.State;
 import rabbitescape.engine.Token.Type;
@@ -7,8 +9,8 @@ import rabbitescape.engine.Token.Type;
 public class SpecialEffectDecorator extends TokenDecorator {
     private final String effectType;
 
-    public SpecialEffectDecorator(TokenComponent token, String effectType) {
-        super(token);
+    public SpecialEffectDecorator(TokenComponent token, int x, int y, State state, String effectType) {
+        super(token, x, y, state);
         this.effectType = effectType;
     }
 
@@ -35,4 +37,37 @@ public class SpecialEffectDecorator extends TokenDecorator {
             // 추가 효과들...
         }
     }
-}
+
+    @Override
+    public String overlayText() {
+        return decoratedToken.overlayText();
+    }
+
+    @Override
+    public void step(World world) {
+        if (decoratedToken instanceof Thing) {
+            ((Thing) decoratedToken).step(world);
+        }
+    }
+
+    @Override
+    public void restoreFromState(Map<String, String> state) {
+        if (decoratedToken instanceof Thing) {
+            ((Thing) decoratedToken).restoreFromState(state);
+        }
+    }
+
+    @Override
+    public Map<String, String> saveState(boolean runtimeMeta) {
+        if (decoratedToken instanceof Thing) {
+            return ((Thing) decoratedToken).saveState(runtimeMeta);
+        }
+        return null;
+    }
+
+    @Override
+    public void accept(ThingVisitor visitor) {
+        if (decoratedToken instanceof Thing) {
+            ((Thing) decoratedToken).accept(visitor);
+        }
+    }

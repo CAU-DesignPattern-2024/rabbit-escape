@@ -71,3 +71,4 @@ public class SpecialEffectDecorator extends TokenDecorator {
             ((Thing) decoratedToken).accept(visitor);
         }
     }
+}

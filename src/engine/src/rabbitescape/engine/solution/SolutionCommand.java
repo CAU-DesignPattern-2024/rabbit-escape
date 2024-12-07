@@ -21,7 +21,7 @@ public class SolutionCommand implements Component
         }
     }
 
-    public final CommandAction[] actions;
+    public final Component[] actions;
 
     /**
      * If the supplied array (vararg) of CommandActions is empty
@@ -45,7 +45,7 @@ public class SolutionCommand implements Component
     {
         if ( actions.length > 1 )
         {
-            for ( CommandAction a: actions )
+            for ( Component a: actions )
             {
                 if ( a instanceof WaitAction )
                 {
@@ -87,8 +87,14 @@ public class SolutionCommand implements Component
         {
             return null;
         }
-        CommandAction action1 = existingCmd.actions[0];
-        CommandAction action2 = newCmd.actions[0];
+
+        CommandAction action1 = null, action2 = null;
+
+        if ( existingCmd instanceof CommandAction && newCmd instanceof CommandAction) {
+            action1 = (CommandAction) existingCmd.actions[0];
+            action2 = (CommandAction) newCmd.actions[0];
+        }
+        
 
         if (
                action1 instanceof WaitAction
@@ -117,7 +123,7 @@ public class SolutionCommand implements Component
         }
         else
         {
-            return actions[ actions.length - 1 ];
+            return (CommandAction) actions[ actions.length - 1 ];
         }
     }
 }

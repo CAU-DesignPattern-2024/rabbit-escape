@@ -5,11 +5,12 @@ import static org.hamcrest.MatcherAssert.*;
 
 import org.junit.*;
 
+import rabbitescape.engine.BaseToken;
 import rabbitescape.engine.Block;
 import rabbitescape.engine.Direction;
 import rabbitescape.engine.Rabbit;
-import rabbitescape.engine.Block.Shape;
 import rabbitescape.engine.Token;
+import rabbitescape.engine.Block.Shape;
 import rabbitescape.engine.World;
 import rabbitescape.engine.textworld.TextWorldManip;
 
@@ -129,7 +130,7 @@ public class TestWorldChanges
         };
 
         World world = TextWorldManip.createWorld( worldText );
-        Token tok0 = world.getTokenAt( 1, 1 );
+        BaseToken tok0 = world.getTokenAt( 1, 1 );
         Rabbit rabbit0 = world.rabbits.get( 0 );
         Rabbit rabbit1 = world.rabbits.get( 1 );
         Rabbit rabbit2 = world.rabbits.get( 2 );

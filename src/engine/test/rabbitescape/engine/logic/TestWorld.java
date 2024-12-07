@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import rabbitescape.engine.BaseToken;
 import rabbitescape.engine.Rabbit;
 import rabbitescape.engine.Token;
 import rabbitescape.engine.World;
@@ -318,7 +319,7 @@ public class TestWorld
             "###"
         );
 
-        Token token = world.getTokenAt( 1, 0 );
+        BaseToken token = world.getTokenAt( 1, 0 );
 
         // Sanity
         assertThat( token, is( notNullValue() ) );
@@ -342,9 +343,9 @@ public class TestWorld
             "###"
         );
 
-        world.things.add( new Token( 1, 0, Token.Type.bridge ) );
+        world.things.add( new BaseToken( 1, 0, Token.Type.bridge ) );
 
-        Token token = world.getTokenAt( 1, 0 );
+        BaseToken token = world.getTokenAt( 1, 0 );
 
         // Sanity
         assertThat( token, is( notNullValue() ) );
@@ -353,7 +354,7 @@ public class TestWorld
         world.changes.removeToken( token );
 
         // This is what we are testing: there's another
-        Token token2 = world.getTokenAt( 1, 0 );
+        BaseToken token2 = world.getTokenAt( 1, 0 );
         assertThat( token2, is( notNullValue() ) );
 
         // Remove that one too

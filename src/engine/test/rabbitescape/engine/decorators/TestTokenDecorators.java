@@ -25,7 +25,7 @@ public class TestTokenDecorators {
     @Test
     public void test_enhanced_range_decorator() {
         TokenComponent baseToken = new BaseToken(1, 2, Type.bridge);
-        TokenComponent enhancedToken = new EnhancedRangeDecorator(baseToken, 2);
+        TokenComponent enhancedToken = new EnhancedRangeDecorator(baseToken, baseToken.getX(), baseToken.getY(), baseToken.getState(), 2);
         
         // 기본 속성들이 제대로 위임되는지 확인
         assertThat(enhancedToken.getX(), is(1));
@@ -47,7 +47,7 @@ public class TestTokenDecorators {
     @Test
     public void test_duration_decorator() {
         TokenComponent baseToken = new BaseToken(1, 2, Type.bridge);
-        DurationDecorator durationToken = new DurationDecorator(baseToken, 3);
+        DurationDecorator durationToken = new DurationDecorator(baseToken, baseToken.getX(), baseToken.getY(), baseToken.getState(), 3);
         
         assertThat(durationToken.getRemainingDuration(), is(3));
         assertThat(durationToken.getState(), is(TOKEN_BRIDGE_STILL));
@@ -75,7 +75,7 @@ public class TestTokenDecorators {
     @Test
     public void test_special_effect_decorator() {
         TokenComponent baseToken = new BaseToken(1, 2, Type.explode);
-        TokenComponent specialToken = new SpecialEffectDecorator(baseToken, "explosion");
+        TokenComponent specialToken = new SpecialEffectDecorator(baseToken, baseToken.getX(), baseToken.getY(), baseToken.getState(), "explosion");
         
         // 기본 속성들이 제대로 위임되는지 확인
         assertThat(specialToken.getX(), is(1));
@@ -97,9 +97,9 @@ public class TestTokenDecorators {
     @Test
     public void test_multiple_decorators() {
         TokenComponent baseToken = new BaseToken(1, 2, Type.bridge);
-        TokenComponent enhancedToken = new EnhancedRangeDecorator(baseToken, 2);
-        TokenComponent durationToken = new DurationDecorator(enhancedToken, 3);
-        TokenComponent specialToken = new SpecialEffectDecorator(durationToken, "explosion");
+        TokenComponent enhancedToken = new EnhancedRangeDecorator(baseToken, baseToken.getX(), baseToken.getY(), baseToken.getState(), 2);
+        TokenComponent durationToken = new DurationDecorator(enhancedToken, baseToken.getX(), baseToken.getY(), baseToken.getState(), 3);
+        TokenComponent specialToken = new SpecialEffectDecorator(durationToken, baseToken.getX(), baseToken.getY(), baseToken.getState(), "explosion");
         
         // 모든 데코레이터를 거친 후에도 기본 속성들이 제대로 위임되는지 확인
         assertThat(specialToken.getX(), is(1));

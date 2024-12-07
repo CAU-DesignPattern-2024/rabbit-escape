@@ -23,7 +23,15 @@ public class Walking extends Behaviour
         }
 
         public State newState() {
-            
+            // chain 순서: Flat → UpSlope → DownSlope
+            StateHandler flatHandler = new FlatGroundHandler(t);
+            StateHandler upSlopeHandler = new UpSlopeHandler(t);
+            StateHandler downSlopeHandler = new DownSlopeHandler(t);
+
+            flatHandler.setNext(upSlopeHandler);
+            upSlopeHandler.setNext(downSlopeHandler);
+
+            return flatHandler.handle();
         }
     }
 

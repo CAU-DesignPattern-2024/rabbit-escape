@@ -1,12 +1,10 @@
 package rabbitescape.engine.solution;
 
 import static org.junit.Assert.assertEquals;
-import static rabbitescape.engine.Token.Type.dig;
 
 import org.junit.Test;
 
 import rabbitescape.engine.Token;
-import rabbitescape.engine.Token.Type;
 
 public class TestComposite {
     @Test

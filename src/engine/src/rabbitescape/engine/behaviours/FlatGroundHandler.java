@@ -5,6 +5,8 @@ import rabbitescape.engine.ChangeDescription.State;
 
 import static rabbitescape.engine.ChangeDescription.State.*;
 
+import rabbitescape.engine.BehaviourTools;
+
 public class FlatGroundHandler extends StateHandler {
 
     public FlatGroundHandler(BehaviourTools t) {

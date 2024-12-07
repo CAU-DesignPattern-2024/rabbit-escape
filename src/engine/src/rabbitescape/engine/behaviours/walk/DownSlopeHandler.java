@@ -1,9 +1,13 @@
-package rabbitescape.engine.behaviours;
+package rabbitescape.engine.behaviours.walk;
 
 import rabbitescape.engine.Block;
 import rabbitescape.engine.ChangeDescription.State;
+import rabbitescape.engine.behaviours.Blocking;
+import rabbitescape.engine.behaviours.StateHandler;
 
 import static rabbitescape.engine.ChangeDescription.State.*;
+
+import rabbitescape.engine.BehaviourTools;
 
 public class DownSlopeHandler extends StateHandler {
 

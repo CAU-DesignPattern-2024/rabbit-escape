@@ -65,21 +65,20 @@ public class SolutionRecorder implements SolutionRecorderTemplate
     public void appendStepEnd() {
         if (!commandInProgress.isEmpty()) {
             // Ensure all components are of type CommandAction
-            CommandAction[] actions = commandInProgress.stream()
-                .filter(a -> a instanceof CommandAction) // Filter only CommandAction
-                .map(a -> (CommandAction) a)             // Cast to CommandAction
-                .toArray(CommandAction[]::new);          // Collect into an array
-            
-            if (actions.length != commandInProgress.size()) {
-                throw new IllegalArgumentException("commandInProgress contains non-CommandAction elements.");
+            List<CommandAction> actionsList = new ArrayList<CommandAction>();
+            for (Component component : commandInProgress) {
+                if (component instanceof CommandAction) {
+                    actionsList.add((CommandAction) component);
+                } else {
+                    throw new IllegalArgumentException("commandInProgress contains non-CommandAction elements.");
+                }
             }
-            
+
+            CommandAction[] actions = actionsList.toArray(new CommandAction[0]);
             append(new SolutionCommand(actions));
             commandInProgress.clear();
         }
     }
-
-
 
 
     @Override

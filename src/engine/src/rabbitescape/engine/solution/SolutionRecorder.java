@@ -40,11 +40,11 @@ public class SolutionRecorder implements SolutionRecorderTemplate
     }
 
     @Override
-    public void append( Solution solution )
-    {
-        for ( SolutionCommand command : solution.commands )
-        {
-            append( command );
+    public void append(Solution solution) {
+        for (Component command : solution.commands) {
+            if (command instanceof SolutionCommand) {
+                append((SolutionCommand) command);
+            }
         }
     }
 

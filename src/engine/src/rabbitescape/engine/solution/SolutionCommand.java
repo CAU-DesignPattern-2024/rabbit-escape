@@ -7,7 +7,7 @@ import java.util.Arrays;
 import rabbitescape.engine.err.RabbitEscapeException;
 import rabbitescape.engine.util.Util;
 
-public class SolutionCommand
+public class SolutionCommand implements Component
 {
     public final class WaitActionInMultiActionCommand
         extends RabbitEscapeException

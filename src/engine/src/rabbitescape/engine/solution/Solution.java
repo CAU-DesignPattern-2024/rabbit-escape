@@ -6,13 +6,18 @@ import java.util.Arrays;
 
 import rabbitescape.engine.util.Util;
 
-public class Solution
+public class Solution implements Component
 {
-    public final SolutionCommand[] commands;
+    public Component[] commands;
 
     public Solution( SolutionCommand... commands )
     {
         this.commands = commands;
+    }
+
+    public void add(Component component) {
+        commands = Arrays.copyOf(commands, commands.length+1);
+        commands[commands.length-1] = component;
     }
 
     @Override

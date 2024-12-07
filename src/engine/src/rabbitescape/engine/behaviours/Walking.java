@@ -14,8 +14,6 @@ public class Walking extends Behaviour
     {
     }
 
-
-
     private static class StateCalc
     {
         private final BehaviourTools t;

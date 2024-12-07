@@ -5,27 +5,31 @@ import java.util.List;
 
 public class SolutionRecorder implements SolutionRecorderTemplate
 {
-    private List<CommandAction> commandInProgress;
-    private final List<SolutionCommand> solutionInProgress;
+    private List<Component> commandInProgress;
+    private final List<Component> solutionInProgress;
 
     public SolutionRecorder()
     {
-        commandInProgress = new ArrayList<CommandAction>();
-        solutionInProgress = new ArrayList<SolutionCommand>();
+        commandInProgress = new ArrayList<Component>();
+        solutionInProgress = new ArrayList<Component>();
     }
 
     @Override
-    public void append( CommandAction a )
-    {
-        commandInProgress.add( a );
+    public void append(Component component) {
+        if (component instanceof CommandAction) {
+            commandInProgress.add(component);
+        } else if (component instanceof SolutionCommand) {
+            appendSolutionCommand((SolutionCommand) component);
+        } else if (component instanceof Solution) {
+            appendSolution((Solution) component);
+        }
     }
 
-    @Override
-    public void append( SolutionCommand newCmd )
+    private void appendSolutionCommand( SolutionCommand newCmd )
     {
         int prevCmdIndex = solutionInProgress.size() - 1;
         SolutionCommand prevCmd =   prevCmdIndex >= 0
-                                  ? solutionInProgress.get( prevCmdIndex )
+                                  ? (SolutionCommand) solutionInProgress.get( prevCmdIndex )
                                   : null ;
         SolutionCommand combCmd =
             SolutionCommand.tryToSimplify( prevCmd, newCmd );
@@ -39,8 +43,7 @@ public class SolutionRecorder implements SolutionRecorderTemplate
         }
     }
 
-    @Override
-    public void append(Solution solution) {
+    private void appendSolution(Solution solution) {
         for (Component command : solution.commands) {
             if (command instanceof SolutionCommand) {
                 append((SolutionCommand) command);
@@ -48,15 +51,25 @@ public class SolutionRecorder implements SolutionRecorderTemplate
         }
     }
 
+    // @Override
+    // public void appendStepEnd()
+    // {
+    //     CommandAction[] aA = new CommandAction[commandInProgress.size()];
+    //     aA = commandInProgress.toArray( aA );
+    //     append( new SolutionCommand( aA ) );
+    //     // Prepare to collect actions in the next step.
+    //     commandInProgress = new ArrayList<CommandAction>();
+    // }
+
     @Override
-    public void appendStepEnd()
-    {
-        CommandAction[] aA = new CommandAction[commandInProgress.size()];
-        aA = commandInProgress.toArray( aA );
-        append( new SolutionCommand( aA ) );
-        // Prepare to collect actions in the next step.
-        commandInProgress = new ArrayList<CommandAction>();
+    public void appendStepEnd() {
+        if (!commandInProgress.isEmpty()) {
+            Component[] actions = commandInProgress.toArray(new Component[0]);
+            append(new SolutionCommand(actions));
+            commandInProgress.clear();
+        }
     }
+
 
     @Override
     public String getRecord()

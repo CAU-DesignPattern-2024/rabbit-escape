@@ -64,11 +64,21 @@ public class SolutionRecorder implements SolutionRecorderTemplate
     @Override
     public void appendStepEnd() {
         if (!commandInProgress.isEmpty()) {
-            Component[] actions = commandInProgress.toArray(new Component[0]);
+            // Ensure all components are of type CommandAction
+            CommandAction[] actions = commandInProgress.stream()
+                .filter(CommandAction.class::isInstance) // Filter only CommandAction
+                .map(CommandAction.class::cast)         // Cast to CommandAction
+                .toArray(CommandAction[]::new);         // Collect into an array
+            
+            if (actions.length != commandInProgress.size()) {
+                throw new IllegalArgumentException("commandInProgress contains non-CommandAction elements.");
+            }
+            
             append(new SolutionCommand(actions));
             commandInProgress.clear();
         }
     }
+
 
 
     @Override

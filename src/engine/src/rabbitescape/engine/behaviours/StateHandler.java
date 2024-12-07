@@ -5,24 +5,26 @@ import rabbitescape.engine.ChangeDescription.State;
 
 public abstract class StateHandler {
     protected final BehaviourTools t;
-    protected final StateHandler next;
+    private StateHandler nextHandler;
 
-    public StateHandler(BehaviourTools t, StateHandler next) {
+    public StateHandler(BehaviourTools t) {
         this.t = t;
-        this.next = next;
+    }
+
+    public void setNext(StateHandler nextHandler) {
+        this.nextHandler = nextHandler;
     }
 
     public State handle() {
-        if (canHandle()) {
-            return computeState();
-        } else if (next != null) {
-            return next.handle();
-        } else {
-            throw new IllegalStateException("No handler could process the request.");
+        State result = process();
+        if (result != null) {
+            return result;
         }
+        if (nextHandler != null) {
+            return nextHandler.handle();
+        }
+        throw new IllegalStateException("No state handler could handle the state");
     }
 
-    protected abstract boolean canHandle();
-
-    protected abstract State computeState();
+    protected abstract State process();
 }

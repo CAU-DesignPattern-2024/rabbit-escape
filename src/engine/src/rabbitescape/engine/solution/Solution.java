@@ -57,6 +57,8 @@ public class Solution implements Component
             result.append(commands[i].serialise());
         }
 
+        // 마지막 ";" 추가
+        result.append(SolutionParser.COMMAND_DELIMITER);
         return result.toString();
     }
 }

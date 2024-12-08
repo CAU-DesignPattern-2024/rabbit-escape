@@ -74,6 +74,20 @@ public class WorldChangesWithCommand extends WorldChanges
     public synchronized void addToken( int x, int y, Token.Type type )
     throws UnableToAddToken
     {
+        Integer numLeft = world.abilities.get(type);
+
+        if (numLeft == null) {
+            throw new World.NoSuchAbilityInThisWorld(type);
+        }
+
+        if (numLeft == 0) {
+            throw new World.NoneOfThisAbilityLeft(type);
+        }
+        
+        if (x < 0 || y < 0 || x >= world.size.width || y >= world.size.height) {
+            throw new World.CantAddTokenOutsideWorld(type, x, y, world.size);
+        }
+
     	addCommand(new AddTokenCommand(world, x, y, type));
     }
 

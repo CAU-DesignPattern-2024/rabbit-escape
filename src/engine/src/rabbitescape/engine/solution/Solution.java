@@ -16,9 +16,15 @@ public class Solution implements Component
     }
 
     public void add(Component component) {
-        commands = Arrays.copyOf(commands, commands.length+1);
-        commands[commands.length-1] = component;
+        if (component instanceof Solution) {
+            // Only allow Solution instances to be added
+            commands = Arrays.copyOf(commands, commands.length + 1);
+            commands[commands.length - 1] = component;
+        } else {
+            throw new IllegalArgumentException("Only instances of Solution can be added.");
+        }
     }
+    
 
     @Override
     public String toString()

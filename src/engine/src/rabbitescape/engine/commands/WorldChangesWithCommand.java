@@ -11,6 +11,7 @@ import rabbitescape.engine.Thing;
 import rabbitescape.engine.Token;
 import rabbitescape.engine.World;
 import rabbitescape.engine.World.UnableToAddToken;
+import rabbitescape.engine.util.Position;
 import rabbitescape.engine.WorldChanges;
 import rabbitescape.engine.WorldStatsListener;
 
@@ -36,6 +37,7 @@ public class WorldChangesWithCommand extends WorldChanges
     	    command.execute();
     	    iterator.remove(); 
     	}
+    	updateStats();
     }
 
     private synchronized void addCommand(Command command) {
@@ -94,6 +96,7 @@ public class WorldChangesWithCommand extends WorldChanges
     @Override
     public synchronized void removeBlockAt( int x, int y )
     {
+       blocksJustRemoved.add( new Position( x, y ) );
     	addCommand(new RemoveBlockAtCommand(world, x, y));
     }
 

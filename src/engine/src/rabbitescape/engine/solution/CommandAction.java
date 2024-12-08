@@ -9,7 +9,7 @@ package rabbitescape.engine.solution;
 public abstract class CommandAction implements Component {
     abstract void typeSwitch( CommandActionTypeSwitch actionTypeSwitch );
     @Override
-    public String serialise() {
+    public String serialize() {
         ActionSerializer s = new ActionSerializer();
         this.typeSwitch(s);
         return s.ret;

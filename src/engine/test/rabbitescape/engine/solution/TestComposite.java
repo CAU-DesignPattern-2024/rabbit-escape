@@ -13,7 +13,7 @@ public class TestComposite {
         Solution solution = new Solution(command);
 
         // When
-        String serialized = SolutionParser.serialise(solution);
+        String serialized = SolutionParser.serialize(solution);
 
         // Then
         assertEquals("3", serialized);
@@ -28,7 +28,7 @@ public class TestComposite {
         Solution solution = new Solution(command);
 
         // When
-        String serialized = SolutionParser.serialise(solution);
+        String serialized = SolutionParser.serialize(solution);
 
         // Then
         assertEquals("climb&dig", serialized);
@@ -59,7 +59,7 @@ public class TestComposite {
         Solution solution = new Solution(command);
 
         // When
-        String serialized = SolutionParser.serialise(solution);
+        String serialized = SolutionParser.serialize(solution);
         Solution deserializedSolution = SolutionParser.parse(serialized);
 
         // Then

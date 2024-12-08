@@ -1,5 +1,5 @@
 package rabbitescape.engine.solution;
 
 public interface Component {
-    public String serialise();
+    public String serialize();
 }

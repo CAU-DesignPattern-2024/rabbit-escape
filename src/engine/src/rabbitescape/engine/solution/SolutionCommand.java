@@ -115,13 +115,13 @@ public class SolutionCommand implements Component
     }
 
     @Override
-    public String serialise() {
+    public String serialize() {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < actions.length; i++) {
             if (i > 0) {
                 result.append("&");
             }
-            result.append(actions[i].serialise());
+            result.append(actions[i].serialize());
         }
         return result.toString();
     }

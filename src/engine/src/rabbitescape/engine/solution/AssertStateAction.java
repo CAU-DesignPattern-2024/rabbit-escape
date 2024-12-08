@@ -2,7 +2,7 @@ package rabbitescape.engine.solution;
 
 import rabbitescape.engine.World.CompletionState;
 
-public class AssertStateAction implements ValidationAction
+public class AssertStateAction extends ValidationAction
 {
     public final CompletionState targetState;
 
@@ -48,7 +48,7 @@ public class AssertStateAction implements ValidationAction
     }
 
     @Override
-    public String serialise() {
+    public String serialize() {
         return targetState.name();
     }
 }

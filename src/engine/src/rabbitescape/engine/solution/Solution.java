@@ -17,11 +17,18 @@ public class Solution implements Component
 
     public void add(Component component) {
         if (component instanceof Solution) {
-            // Only allow Solution instances to be added
+            // Solution을 추가할 때, 내부의 SolutionCommand들을 추출하여 추가
+            Solution solution = (Solution) component;
+            for (Component innerComponent : solution.commands) {
+                if (innerComponent instanceof SolutionCommand) {
+                    commands = Arrays.copyOf(commands, commands.length + 1);
+                    commands[commands.length - 1] = innerComponent;  // SolutionCommand 추가
+                }
+            }
+        } else {
+            // Solution이 아닌 경우 일반적인 add 처리
             commands = Arrays.copyOf(commands, commands.length + 1);
             commands[commands.length - 1] = component;
-        } else {
-            throw new IllegalArgumentException("Only instances of Solution can be added.");
         }
     }
     

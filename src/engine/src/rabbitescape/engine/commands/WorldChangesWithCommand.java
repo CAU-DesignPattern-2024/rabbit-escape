@@ -20,6 +20,7 @@ public class WorldChangesWithCommand extends WorldChanges
 
     private final World world;
     private final List<Command> commandQueue;
+    private int saveCount=0;
 
     public WorldChangesWithCommand(World world, WorldStatsListener statsListener )
     {
@@ -52,6 +53,8 @@ public class WorldChangesWithCommand extends WorldChanges
     public synchronized void revert()
     {
     	commandQueue.clear();
+    	world.num_saved-=saveCount;
+    	saveCount = 0;
     }
 
     @Override
@@ -69,6 +72,7 @@ public class WorldChangesWithCommand extends WorldChanges
     @Override
     public synchronized void saveRabbit( Rabbit rabbit )
     {
+    	saveCount++;
     	addCommand(new SaveRabbitCommand(world, rabbit));
     }
 

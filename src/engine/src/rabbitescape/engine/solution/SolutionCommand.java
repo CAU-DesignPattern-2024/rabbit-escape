@@ -113,4 +113,16 @@ public class SolutionCommand implements Component
             return (CommandAction) actions[ actions.length - 1 ];
         }
     }
+
+    @Override
+    public String serialise() {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < actions.length; i++) {
+            if (i > 0) {
+                result.append("&");
+            }
+            result.append(actions[i].serialise());
+        }
+        return result.toString();
+    }
 }

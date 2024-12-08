@@ -45,4 +45,18 @@ public class Solution implements Component
     {
         return Arrays.deepHashCode( commands );
     }
+
+    @Override
+    public String serialise() {
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < commands.length; i++) {
+            if (i > 0) {
+                result.append(SolutionParser.COMMAND_DELIMITER); // ";" 사용
+            }
+            result.append(commands[i].serialise());
+        }
+
+        return result.toString();
+    }
 }

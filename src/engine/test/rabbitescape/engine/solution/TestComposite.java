@@ -82,7 +82,7 @@ public class TestComposite {
         String serialized = recorder.getRecord();
 
         // Then
-        assertEquals("3;CLIMB;", serialized);
+        assertEquals("3;climb;", serialized);
     }
 
     @Test(expected = SolutionCommand.WaitActionInMultiActionCommand.class)

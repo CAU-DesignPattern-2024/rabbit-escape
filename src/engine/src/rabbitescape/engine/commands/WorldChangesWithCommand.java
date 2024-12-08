@@ -31,14 +31,16 @@ public class WorldChangesWithCommand extends WorldChanges
     @Override
     public synchronized void apply()
     {
+    	boolean existsSave = false;
     	if(explodeAll) explodeAllRabbits();
     	Iterator<Command> iterator = commandQueue.iterator();
     	while (iterator.hasNext()) {
     	    Command command = iterator.next();
     	    command.execute();
+    	    if(command instanceof SaveRabbitCommand) existsSave = true;
     	    iterator.remove(); 
     	}
-    	updateStats();
+    	if(existsSave) updateStats();
     	tokensToRemove.clear();
     }
 

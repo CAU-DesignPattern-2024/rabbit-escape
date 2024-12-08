@@ -1,11 +1,14 @@
 package rabbitescape.engine.behaviours;
 
-import static rabbitescape.engine.ChangeDescription.State.*;
 import static rabbitescape.engine.Direction.*;
 import static rabbitescape.engine.Block.Shape.*;
 
 import rabbitescape.engine.*;
 import rabbitescape.engine.ChangeDescription.State;
+import rabbitescape.engine.behaviours.walk.DownSlopeHandler;
+import rabbitescape.engine.behaviours.walk.FlatGroundHandler;
+import rabbitescape.engine.behaviours.walk.StateHandler;
+import rabbitescape.engine.behaviours.walk.UpSlopeHandler;
 
 public class Walking extends Behaviour
 {
@@ -13,166 +16,25 @@ public class Walking extends Behaviour
     public void cancel()
     {
     }
+    
+    private static class StateCalc {
 
-    private static class StateCalc
-    {
         private final BehaviourTools t;
 
-        StateCalc( BehaviourTools t )
-        {
+        StateCalc(BehaviourTools t) {
             this.t = t;
         }
 
-        public State newState()
-        {
-            if ( t.isOnUpSlope() )
-            {
-                Block aboveNext = t.blockAboveNext();
-                Block above = t.blockAbove();
-                int nextX = t.nextX();
-                int nextY = t.rabbit.y - 1;
+        public State newState() {
+            // chain 순서: Flat → UpSlope → DownSlope
+            StateHandler flatHandler = new FlatGroundHandler(t);
+            StateHandler upSlopeHandler = new UpSlopeHandler(t);
+            StateHandler downSlopeHandler = new DownSlopeHandler(t);
 
-                if
-                    (
-                       t.isWall( aboveNext )
-                    || Blocking.blockerAt( t.world, nextX, nextY )
-                    || t.isRoof( above )
-                    || ( t.isCresting() &&
-                         Blocking.blockerAt( t.world, nextX, t.rabbit.y ) )
-                    )
-                {
-                    return rl(
-                        RABBIT_TURNING_RIGHT_TO_LEFT_RISING,
-                        RABBIT_TURNING_LEFT_TO_RIGHT_RISING
-                    );
-                }
-                else if ( t.isUpSlope( aboveNext ) )
-                {
-                    return rl(
-                        RABBIT_RISING_RIGHT_CONTINUE,
-                        RABBIT_RISING_LEFT_CONTINUE
-                    );
-                }
-                else if ( t.isDownSlope( t.blockNext() ) )
-                {
-                    return rl(
-                        RABBIT_RISING_AND_LOWERING_RIGHT,
-                        RABBIT_RISING_AND_LOWERING_LEFT
-                    );
-                }
-                else
-                {
-                    return rl(
-                        RABBIT_RISING_RIGHT_END,
-                        RABBIT_RISING_LEFT_END
-                    );
-                }
-            }
-            else if ( t.isOnDownSlope() )
-            {
-                int nextX = t.nextX();
-                int nextY = t.rabbit.y + 1;
-                Block next = t.blockNext();
-                Block belowNext = t.blockBelowNext();
+            flatHandler.setNext(upSlopeHandler);
+            upSlopeHandler.setNext(downSlopeHandler);
 
-                if (
-                       t.isWall( next )
-                    || Blocking.blockerAt( t.world, nextX, nextY )
-                    || ( t.isValleying() &&
-                         Blocking.blockerAt( t.world, nextX, t.rabbit.y ) )
-                    )
-                {
-                    return rl(
-                        RABBIT_TURNING_RIGHT_TO_LEFT_LOWERING,
-                        RABBIT_TURNING_LEFT_TO_RIGHT_LOWERING
-                    );
-                }
-                else if ( t.isUpSlope( next ) )
-                {
-                    return rl(
-                        RABBIT_LOWERING_AND_RISING_RIGHT,
-                        RABBIT_LOWERING_AND_RISING_LEFT
-                    );
-                }
-                else if ( t.isDownSlope( belowNext ) )
-                {
-                    return rl(
-                        RABBIT_LOWERING_RIGHT_CONTINUE,
-                        RABBIT_LOWERING_LEFT_CONTINUE
-                    );
-                }
-                else
-                {
-                    if ( Blocking.blockerAt( t.world, nextX, t.rabbit.y ) )
-                    {
-                        return rl(
-                            RABBIT_TURNING_RIGHT_TO_LEFT_LOWERING,
-                            RABBIT_TURNING_LEFT_TO_RIGHT_LOWERING
-                        );
-                    }
-                    else
-                    {
-                        return rl(
-                            RABBIT_LOWERING_RIGHT_END,
-                            RABBIT_LOWERING_LEFT_END
-                        );
-                    }
-                }
-            }
-            else  // On flat ground now
-            {
-                int nextX = t.nextX();
-                int nextY = t.rabbit.y;
-                Block next = t.blockNext();
-
-                if
-                    (
-                       t.isWall( next )
-                    || Blocking.blockerAt( t.world, nextX, nextY )
-                    )
-                {
-                    return rl(
-                        RABBIT_TURNING_RIGHT_TO_LEFT,
-                        RABBIT_TURNING_LEFT_TO_RIGHT
-                    );
-                }
-                else if ( t.isUpSlope( next ) )
-                {
-                    return rl(
-                        RABBIT_RISING_RIGHT_START,
-                        RABBIT_RISING_LEFT_START
-                    );
-                }
-                else if ( t.isDownSlope( t.blockBelowNext() ) )
-                {
-                    if ( Blocking.blockerAt( t.world, nextX, t.rabbit.y + 1 ) )
-                    {
-                        return rl(
-                            RABBIT_TURNING_RIGHT_TO_LEFT,
-                            RABBIT_TURNING_LEFT_TO_RIGHT
-                        );
-                    }
-                    else
-                    {
-                        return rl(
-                            RABBIT_LOWERING_RIGHT_START,
-                            RABBIT_LOWERING_LEFT_START
-                        );
-                    }
-                }
-                else
-                {
-                    return rl(
-                        RABBIT_WALKING_RIGHT,
-                        RABBIT_WALKING_LEFT
-                    );
-                }
-            }
-        }
-
-        private State rl( State rightState, State leftState )
-        {
-            return t.rl( rightState, leftState );
+            return flatHandler.handle();
         }
     }
 
@@ -183,9 +45,8 @@ public class Walking extends Behaviour
     }
 
     @Override
-    public State newState( BehaviourTools t, boolean triggered )
-    {
-        return new StateCalc( t ).newState();
+    public State newState(BehaviourTools t, boolean triggered) {
+        return new StateCalc(t).newState();
     }
 
     @Override
@@ -305,6 +166,8 @@ public class Walking extends Behaviour
             }
         }
     }
+
+
 
     /**
      * If we turn around near a slope, we jump onto it

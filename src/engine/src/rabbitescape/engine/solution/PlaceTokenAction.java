@@ -1,5 +1,7 @@
 package rabbitescape.engine.solution;
 
+import rabbitescape.engine.ActionSerialiser;
+
 public class PlaceTokenAction implements CommandAction, TimeStepAction
 {
     public final int x;
@@ -55,5 +57,12 @@ public class PlaceTokenAction implements CommandAction, TimeStepAction
     public void typeSwitch( TimeStepActionTypeSwitch timeStepActionTypeSwitch )
     {
         timeStepActionTypeSwitch.casePlaceTokenAction( this );
+    }
+
+    @Override
+    public String serialise() {
+        ActionSerialiser s = new ActionSerialiser();
+        this.typeSwitch(s);
+        return s.ret;
     }
 }

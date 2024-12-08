@@ -1,9 +1,7 @@
 package rabbitescape.engine.solution;
 
 import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
-
 import rabbitescape.engine.Token;
 
 public class TestComposite {
@@ -18,7 +16,7 @@ public class TestComposite {
         String serialized = SolutionParser.serialise(solution);
 
         // Then
-        assertEquals("3;", serialized);
+        assertEquals("3", serialized);
     }
 
     @Test
@@ -33,7 +31,7 @@ public class TestComposite {
         String serialized = SolutionParser.serialise(solution);
 
         // Then
-        assertEquals("2&DIG;", serialized);
+        assertEquals("2&DIG", serialized);
     }
 
     @Test
@@ -50,7 +48,7 @@ public class TestComposite {
         String serialized = SolutionParser.serialise(outerSolution);
 
         // Then
-        assertEquals("2;;1;", serialized);
+        assertEquals("2;;1", serialized);
     }
 
     @Test
@@ -82,7 +80,7 @@ public class TestComposite {
         String serialized = recorder.getRecord();
 
         // Then
-        assertEquals("3;climb;", serialized);
+        assertEquals("3;climb", serialized);
     }
 
     @Test(expected = SolutionCommand.WaitActionInMultiActionCommand.class)

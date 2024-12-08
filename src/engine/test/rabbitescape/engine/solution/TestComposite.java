@@ -34,23 +34,6 @@ public class TestComposite {
         assertEquals("climb&dig", serialized);
     }
 
-    // @Test
-    // public void testNestedSolutionSerialization() {
-    //     // Given
-    //     SolutionCommand innerCommand = new SolutionCommand(new WaitAction(1));
-    //     Solution nestedSolution = new Solution(innerCommand);
-
-    //     SolutionCommand outerCommand = new SolutionCommand(new WaitAction(2));
-    //     Solution outerSolution = new Solution(outerCommand);
-    //     outerSolution.add(nestedSolution);
-
-    //     // When
-    //     String serialized = SolutionParser.serialise(outerSolution);
-
-    //     // Then
-    //     assertEquals("2;;1", serialized);
-    // }
-
     @Test
     public void testSerializationAndDeserializationConsistency() {
         // Given
@@ -80,6 +63,43 @@ public class TestComposite {
 
         // Then
         assertEquals("3;climb", serialized);
+    }
+
+    @Test
+    public void testCombineWaitActionsUsingAppendSolutionCommand() {
+        // Given
+        SolutionRecorder recorder = new SolutionRecorder();
+
+        // Append two separate WaitActions
+        recorder.append(new WaitAction(3));
+        recorder.append(new WaitAction(5));
+        recorder.appendStepEnd();
+
+        // When
+        String serialized = recorder.getRecord();
+
+        // Then
+        // Both WaitActions should be combined into a single WaitAction with 8 steps
+        assertEquals("8", serialized);
+    }
+
+    @Test
+    public void testCombineMultipleWaitActionsSequentially() {
+        // Given
+        SolutionRecorder recorder = new SolutionRecorder();
+
+        // Append multiple WaitActions
+        recorder.append(new WaitAction(2));
+        recorder.append(new WaitAction(4));
+        recorder.append(new WaitAction(1));
+        recorder.appendStepEnd();
+
+        // When
+        String serialized = recorder.getRecord();
+
+        // Then
+        // All WaitActions should be combined into a single WaitAction with 7 steps
+        assertEquals("7", serialized);
     }
 
     @Test(expected = SolutionCommand.WaitActionInMultiActionCommand.class)

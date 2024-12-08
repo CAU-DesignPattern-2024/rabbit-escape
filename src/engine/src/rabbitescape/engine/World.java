@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import rabbitescape.engine.Rabbit.Type;
+import rabbitescape.engine.commands.WorldChangesWithCommand;
 import rabbitescape.engine.err.RabbitEscapeException;
 import rabbitescape.engine.events.*;
 import rabbitescape.engine.textworld.Comment;
@@ -198,7 +199,8 @@ public class World
         }
 
         this.eventManager = new GameEventManager();
-        this.changes = new WorldChanges( this, new WorldStatsListenerAdapter(statsListener, eventManager) );
+        this.changes = new WorldChangesWithCommand( this, new WorldStatsListenerAdapter(statsListener, eventManager) );
+        //this.changes = new WorldChanges( this, new WorldStatsListenerAdapter(statsListener, eventManager) );
         this.levelWinListener = null;
 
         init();
@@ -256,7 +258,8 @@ public class World
         this.voidStyle = voidStyle;
 
         this.eventManager = new GameEventManager();
-        this.changes = new WorldChanges(this, new WorldStatsListenerAdapter(statsListener, eventManager));
+        this.changes = new WorldChangesWithCommand(this, new WorldStatsListenerAdapter(statsListener, eventManager));
+        //this.changes = new WorldChanges(this, new WorldStatsListenerAdapter(statsListener, eventManager));
         this.levelWinListener = null;
 
         init();

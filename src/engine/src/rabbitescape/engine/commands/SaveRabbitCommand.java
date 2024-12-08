@@ -11,13 +11,11 @@ public class SaveRabbitCommand implements Command {
     public SaveRabbitCommand(World world, Rabbit rabbit) {
         this.world = world;
         this.rabbit = rabbit;
+        ++world.num_saved;
     }
 
     @Override
     public void execute() {
-        // Increment the saved counter
-        ++world.num_saved;
-
         // Remove the rabbit from the world and add it to the saved list
         world.rabbits.remove(rabbit);
     }

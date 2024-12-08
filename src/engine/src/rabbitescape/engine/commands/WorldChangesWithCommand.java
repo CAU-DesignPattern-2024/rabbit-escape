@@ -31,15 +31,14 @@ public class WorldChangesWithCommand extends WorldChanges
     @Override
     public synchronized void apply()
     {
+    	if(explodeAll) explodeAllRabbits();
     	Iterator<Command> iterator = commandQueue.iterator();
     	while (iterator.hasNext()) {
     	    Command command = iterator.next();
     	    command.execute();
-    	    System.out.println(command.getClass());
     	    iterator.remove(); 
     	}
     	updateStats();
-    	System.out.println("WorldChangesWithCommand: apply");
     	tokensToRemove.clear();
     }
 
@@ -119,6 +118,7 @@ public class WorldChangesWithCommand extends WorldChanges
     @Override
     public synchronized void explodeAllRabbits()
     {
+    	explodeAll = true;
     	addCommand(new ExplodeAllCommand(world));
     }
 

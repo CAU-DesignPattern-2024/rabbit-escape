@@ -35,9 +35,12 @@ public class WorldChangesWithCommand extends WorldChanges
     	while (iterator.hasNext()) {
     	    Command command = iterator.next();
     	    command.execute();
+    	    System.out.println(command.getClass());
     	    iterator.remove(); 
     	}
     	updateStats();
+    	System.out.println("WorldChangesWithCommand: apply");
+    	tokensToRemove.clear();
     }
 
     private synchronized void addCommand(Command command) {
@@ -78,6 +81,7 @@ public class WorldChangesWithCommand extends WorldChanges
     @Override
     public synchronized void removeToken( Token thing )
     {
+    	tokensToRemove.add(thing);
     	addCommand(new RemoveTokenCommand(world, thing));
     }
 
@@ -121,18 +125,18 @@ public class WorldChangesWithCommand extends WorldChanges
     @Override
     public List<Rabbit> rabbitsJustEntered()
     {
-    	List<Rabbit> rabbitsJustEntered = new ArrayList<>();
-    	
-    	for(Command cmd : commandQueue) {
-    		if(cmd instanceof EnterRabbitCommand) rabbitsJustEntered.add(((EnterRabbitCommand) cmd).getRabbit());
-    	}
-    	
         return rabbitsJustEntered;
     }
 
     @Override
     public void rememberWhatWillHappen()
     {
-        //rabbitsJustEntered = new ArrayList<Rabbit>( rabbitsToEnter );
+    	List<Rabbit> rabbitsToEnter = new ArrayList<>();
+    	
+    	for(Command cmd : commandQueue) {
+    		if(cmd instanceof EnterRabbitCommand) rabbitsToEnter.add(((EnterRabbitCommand) cmd).getRabbit());
+    	}
+    	
+        rabbitsJustEntered = rabbitsToEnter;
     }
 }

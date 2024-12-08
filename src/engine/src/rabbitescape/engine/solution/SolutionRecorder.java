@@ -86,6 +86,6 @@ public class SolutionRecorder implements SolutionRecorderTemplate
     {
         SolutionCommand[] cA = new SolutionCommand[solutionInProgress.size()];
         Solution s = new Solution( solutionInProgress.toArray( cA ) );
-        return SolutionParser.serialize( s );
+        return SolutionParser.serialize(s);
     }
 }

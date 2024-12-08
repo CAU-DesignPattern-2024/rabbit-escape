@@ -60,8 +60,8 @@ public class SolutionParser
             actions.toArray( new CommandAction[ actions.size() ] ) );
     }
 
-    public static String serialise(Solution solution) {
-        return solution.serialise();
+    public static String serialize(Solution solution) {
+        return solution.serialize();
     }
 
     // ---

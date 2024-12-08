@@ -1,8 +1,6 @@
-package rabbitescape.engine;
+package rabbitescape.engine.solution;
 
-import rabbitescape.engine.solution.*;
-
-public class ActionSerialiser implements CommandActionTypeSwitch
+public class ActionSerializer implements CommandActionTypeSwitch
 {
     public String ret = null;
 

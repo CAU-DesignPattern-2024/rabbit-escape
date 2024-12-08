@@ -54,9 +54,10 @@ public class Solution implements Component
             if (i > 0) {
                 result.append(SolutionParser.COMMAND_DELIMITER); // ";" 사용
             }
+            System.out.println("serialise result: " + result.toString());
             result.append(commands[i].serialise());
         }
-        
+
         return result.toString();
     }
 }

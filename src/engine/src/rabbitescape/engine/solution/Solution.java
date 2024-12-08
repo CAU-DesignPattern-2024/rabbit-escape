@@ -51,11 +51,11 @@ public class Solution implements Component
         StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < commands.length; i++) {
-            if (i > 0) {
-                result.append(SolutionParser.COMMAND_DELIMITER); // ";" 사용
-            }
-            System.out.println("serialise result: " + result.toString());
             result.append(commands[i].serialise());
+            
+            if (i < commands.length - 1) {
+                result.append(SolutionParser.COMMAND_DELIMITER); // ';' 추가
+            }
         }
 
         return result.toString();

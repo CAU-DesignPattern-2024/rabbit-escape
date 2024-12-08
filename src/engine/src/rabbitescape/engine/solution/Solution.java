@@ -49,11 +49,11 @@ public class Solution implements Component
     }
 
     @Override
-    public String serialise() {
+    public String serialize() {
         StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < commands.length; i++) {
-            result.append(commands[i].serialise());
+            result.append(commands[i].serialize());
             
             if (i < commands.length - 1) {
                 result.append(SolutionParser.COMMAND_DELIMITER); // ';' 추가

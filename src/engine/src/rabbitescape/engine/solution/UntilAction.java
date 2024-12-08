@@ -1,9 +1,8 @@
 package rabbitescape.engine.solution;
 
-import rabbitescape.engine.ActionSerialiser;
 import rabbitescape.engine.World.CompletionState;
 
-public class UntilAction implements CommandAction
+public class UntilAction extends CommandAction
 {
     public final CompletionState targetState;
 
@@ -40,12 +39,5 @@ public class UntilAction implements CommandAction
     public void typeSwitch( CommandActionTypeSwitch actionTypeSwitch )
     {
         actionTypeSwitch.caseUntilAction( this );
-    }
-
-    @Override
-    public String serialise() {
-        ActionSerialiser s = new ActionSerialiser();
-        this.typeSwitch(s);
-        return s.ret;
     }
 }

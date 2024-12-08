@@ -46,4 +46,9 @@ public class AssertStateAction implements ValidationAction
     {
         timeStepActionTypeSwitch.caseAssertStateAction( this );
     }
+
+    @Override
+    public String serialise() {
+        return targetState.name();
+    }
 }

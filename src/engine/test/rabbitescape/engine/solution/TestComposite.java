@@ -70,9 +70,9 @@ public class TestComposite {
         // Given
         SolutionRecorder recorder = new SolutionRecorder();
 
-        // Append two separate WaitActions
-        recorder.append(new WaitAction(3));
-        recorder.append(new WaitAction(5));
+        // Append two WaitActions, wrapped in SolutionCommand
+        recorder.append(new SolutionCommand(new WaitAction(3))); // Wrap first WaitAction
+        recorder.append(new SolutionCommand(new WaitAction(5))); // Wrap second WaitAction
         recorder.appendStepEnd();
 
         // When
@@ -88,10 +88,10 @@ public class TestComposite {
         // Given
         SolutionRecorder recorder = new SolutionRecorder();
 
-        // Append multiple WaitActions
-        recorder.append(new WaitAction(2));
-        recorder.append(new WaitAction(4));
-        recorder.append(new WaitAction(1));
+        // Append multiple WaitActions, wrapped in SolutionCommand
+        recorder.append(new SolutionCommand(new WaitAction(2)));
+        recorder.append(new SolutionCommand(new WaitAction(4)));
+        recorder.append(new SolutionCommand(new WaitAction(1)));
         recorder.appendStepEnd();
 
         // When

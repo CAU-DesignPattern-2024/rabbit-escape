@@ -12,7 +12,7 @@ public class SolutionInterpreter
 {
     private static final int maxUntils = 1000;
 
-    private final Iterator<SolutionCommand> commandIt;
+    private final Iterator<Component> commandIt;
     private int commandIndex;
 
     private final WonAssertCreator wonAssert;
@@ -101,14 +101,22 @@ public class SolutionInterpreter
     {
         wait = null;
 
-        if ( ! commandIt.hasNext() )
-        {
+        if ( ! commandIt.hasNext() ) {
             ++commandIndex;
             return wonAssert.create( commandIndex, command );
         }
 
-        command = commandIt.next();
+
+        Component component = commandIt.next();
+        // command = commandIt.next();
         ++commandIndex;
+
+        if (component instanceof SolutionCommand) {
+            command = (SolutionCommand) component;
+        } else {
+            throw new IllegalArgumentException("Unexpected component type");
+        }
+
 
         // Work around need for final variable
         class StepsToWait { int value = 0; };
@@ -116,9 +124,11 @@ public class SolutionInterpreter
 
         final List<TimeStepAction> tsActions = new ArrayList<TimeStepAction>();
 
-        for ( CommandAction action : command.actions )
+        for ( Component action : command.actions )
         {
-            action.typeSwitch( new CommandActionTypeSwitch()
+            if (action instanceof CommandAction) {
+                CommandAction ca = (CommandAction) action;
+                ca.typeSwitch( new CommandActionTypeSwitch()
             {
                 @Override
                 public void caseWaitAction( WaitAction waitAction )
@@ -160,6 +170,7 @@ public class SolutionInterpreter
                 }
                 // Curse you, Java, for making me this way
             } );
+            }
         }
 
         if ( stepsToWait.value > 1 )

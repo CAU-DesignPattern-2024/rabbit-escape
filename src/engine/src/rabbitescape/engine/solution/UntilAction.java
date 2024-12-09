@@ -2,7 +2,7 @@ package rabbitescape.engine.solution;
 
 import rabbitescape.engine.World.CompletionState;
 
-public class UntilAction implements CommandAction
+public class UntilAction extends CommandAction
 {
     public final CompletionState targetState;
 

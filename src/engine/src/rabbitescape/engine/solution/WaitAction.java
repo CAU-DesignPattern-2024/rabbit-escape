@@ -1,6 +1,6 @@
 package rabbitescape.engine.solution;
 
-public class WaitAction implements CommandAction
+public class WaitAction extends CommandAction
 {
     public final int steps;
 

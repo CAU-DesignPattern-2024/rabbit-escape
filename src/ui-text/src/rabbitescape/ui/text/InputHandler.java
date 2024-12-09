@@ -51,7 +51,7 @@ public class InputHandler
                 return fail( t( "Unexpected problem: no SolutionCommand" ) );
             }
 
-            SolutionCommand command =
+            SolutionCommand command = (SolutionCommand)
                 partialSolution.commands[ partialSolution.commands.length - 1 ];
 
             // TODO: until commands step past the last time step, so we

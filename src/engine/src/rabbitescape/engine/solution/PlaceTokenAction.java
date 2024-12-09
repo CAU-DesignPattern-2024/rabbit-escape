@@ -1,6 +1,6 @@
 package rabbitescape.engine.solution;
 
-public class PlaceTokenAction implements CommandAction, TimeStepAction
+public class PlaceTokenAction extends CommandAction implements TimeStepAction
 {
     public final int x;
     public final int y;

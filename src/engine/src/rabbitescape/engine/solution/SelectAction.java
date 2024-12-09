@@ -2,7 +2,7 @@ package rabbitescape.engine.solution;
 
 import rabbitescape.engine.Token;
 
-public class SelectAction implements CommandAction, TimeStepAction
+public class SelectAction extends CommandAction implements TimeStepAction
 {
     public final Token.Type type;
 

@@ -28,9 +28,9 @@ public class WorldChanges
     public final List<Position>   blocksJustRemoved = new ArrayList<Position>();
     private final List<Position>  waterPointsToRecalculate = new ArrayList<>();
 
-    private boolean explodeAll = false;
+    protected boolean explodeAll = false;
 
-    private List<Rabbit> rabbitsJustEntered = new ArrayList<Rabbit>();
+    protected List<Rabbit> rabbitsJustEntered = new ArrayList<Rabbit>();
 
     public WorldChanges( World world, WorldStatsListener statsListener )
     {
@@ -83,7 +83,7 @@ public class WorldChanges
         }
     }
 
-    private void updateStats()
+    protected void updateStats()
     {
         statsListener.worldStats( world.num_saved, world.num_to_save );
     }

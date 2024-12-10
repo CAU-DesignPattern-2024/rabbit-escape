@@ -1,6 +1,6 @@
 package rabbitescape.engine.commands;
 
-import java.util.List;
+import java.util.Arrays;
 
 import rabbitescape.engine.Block;
 import rabbitescape.engine.World;
@@ -26,7 +26,7 @@ public class RemoveBlockAtCommand implements Command {
             throw new NoBlockFound(x, y);
         }
 
-        world.blockTable.removeAll(List.of(block));
+        world.blockTable.removeAll(Arrays.asList(block));
         world.recalculateWaterRegions(new Position(x, y));
     }
 

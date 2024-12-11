@@ -240,4 +240,8 @@ public class WorldChanges
     {
         rabbitsJustEntered = new ArrayList<Rabbit>( rabbitsToEnter );
     }
+
+    public List<Block> getBlocksToAdd() {
+        return blocksToAdd;
+    }
 }

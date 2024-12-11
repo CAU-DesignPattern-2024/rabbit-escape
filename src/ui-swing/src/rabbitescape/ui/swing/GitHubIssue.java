@@ -69,19 +69,13 @@ public class GitHubIssue
         }
     }
 
+    public String getStateType(){
+        return state.getType();
+    }
+
     public int getNumber()
     {
         return number;
-    }
-
-    public boolean isLevel()
-    {
-        return state.getType().equals("level");
-    }
-
-    public boolean isBug()
-    {
-        return state.getType().equals("bug");
     }
 
     /**

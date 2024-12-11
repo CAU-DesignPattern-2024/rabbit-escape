@@ -26,6 +26,8 @@ import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import rabbitescape.ui.swing.state.StateUtil;
+
 import static rabbitescape.engine.i18n.Translation.t;
 
 /**
@@ -120,14 +122,14 @@ public class GitHubIssueDialog extends JDialog implements ChangeListener
             switch ( filterMode )
             {
             case BUG:
-                if ( !ghi.isBug() )
+                if ( !ghi.getStateType().equals(StateUtil.STATE_BUG) )
                 {
                     return getRelativeValue( indexStep
                         + (int)Math.signum( indexStep ) );
                 }
                 break;
             case LEVEL:
-                if ( !ghi.isLevel() )
+                if ( !ghi.getStateType().equals(StateUtil.STATE_LEVEL) )
                 {
                     return getRelativeValue( indexStep
                         + (int)Math.signum( indexStep ) );

@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import rabbitescape.ui.swing.state.BugIssueState;
 import rabbitescape.ui.swing.state.LevelIssueState;
+import rabbitescape.ui.swing.state.StateUtil;
 import rabbitescape.ui.swing.state.DefaultIssueState;
 
 public class TestGitHubIssue {
@@ -21,8 +22,7 @@ public class TestGitHubIssue {
 
     @Test
     public void defaultStateTest() {
-        assertThat(issue.isBug()).isFalse();
-        assertThat(issue.isLevel()).isFalse();
+        assertThat(issue.getStateType()).equals(StateUtil.STATE_DEFAULT);
     }
 
     @Test
@@ -32,8 +32,7 @@ public class TestGitHubIssue {
             new String[]{"bug"});
 
         // Then
-        assertThat(bugIssue.isBug()).isTrue();
-        assertThat(bugIssue.isLevel()).isFalse();
+        assertThat(issue.getStateType()).equals(StateUtil.STATE_BUG);
     }
 
     @Test
@@ -43,8 +42,7 @@ public class TestGitHubIssue {
             new String[]{"level"});
 
         // Then
-        assertThat(levelIssue.isBug()).isFalse();
-        assertThat(levelIssue.isLevel()).isTrue();
+        assertThat(issue.getStateType()).equals(StateUtil.STATE_LEVEL);
     }
 
     @Test
@@ -53,8 +51,7 @@ public class TestGitHubIssue {
         issue.setState(new BugIssueState());
 
         // Then
-        assertThat(issue.isBug()).isTrue();
-        assertThat(issue.isLevel()).isFalse();
+        assertThat(issue.getStateType()).equals(StateUtil.STATE_BUG);
     }
 
     @Test
@@ -63,8 +60,7 @@ public class TestGitHubIssue {
         issue.setState(new LevelIssueState());
 
         // Then
-        assertThat(issue.isBug()).isFalse();
-        assertThat(issue.isLevel()).isTrue();
+        assertThat(issue.getStateType()).equals(StateUtil.STATE_LEVEL);
     }
 
     @Test
@@ -76,8 +72,7 @@ public class TestGitHubIssue {
         issue.setState(new DefaultIssueState());
 
         // Then
-        assertThat(issue.isBug()).isFalse();
-        assertThat(issue.isLevel()).isFalse();
+        assertThat(issue.getStateType()).equals(StateUtil.STATE_DEFAULT);
     }
 
     @Test
@@ -87,8 +82,7 @@ public class TestGitHubIssue {
             new String[]{"bug", "level"});
 
         // Then
-        assertThat(multiLabelIssue.isBug()).isFalse();
-        assertThat(multiLabelIssue.isLevel()).isTrue();
+        assertThat(issue.getStateType()).equals(StateUtil.STATE_LEVEL);
     }
 
     @Test
@@ -100,6 +94,6 @@ public class TestGitHubIssue {
         issue.setState(null);
 
         // Then
-        assertThat(issue.isBug()).isTrue();
+        assertThat(issue.getStateType()).equals(StateUtil.STATE_BUG);
     }
 }

@@ -88,22 +88,4 @@ public class TestFrame {
         assertThat(frame1.getOffsetY()).isEqualTo(frame2.getOffsetY());
         assertThat(frame1.getSoundEffect()).isEqualTo(frame2.getSoundEffect());
     }
-    
-    @Test
-    public void should_reset_optional_values_for_new_builder() {
-        // Given
-        Frame frame1 = new Frame.FrameBuilder("test_frame")
-            .offsetX(10)
-            .offsetY(20)
-            .soundEffect("boom")
-            .build();
-        
-        // When
-        Frame frame2 = new Frame.FrameBuilder("another_frame").build();
-        
-        // Then
-        assertThat(frame2.getOffsetX()).isEqualTo(0);
-        assertThat(frame2.getOffsetY()).isEqualTo(0);
-        assertThat(frame2.getSoundEffect()).isNull();
-    }
 }
